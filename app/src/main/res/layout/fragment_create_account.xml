@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundLogin"
+    tools:context=".CreateAccount">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topappbar"
+            app:titleTextColor="@color/colorText"
+            app:navigationIconTint="@color/colorText"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:title="Create Account" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <TextView
+        android:id="@+id/text_mobile_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Step 1: Mobile number"
+        android:textColor="@color/colorText"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/appbar" />
+
+    <ProgressBar
+        android:progressDrawable="@drawable/custom_progressbar"
+        android:progress="20"
+        android:layout_margin="@dimen/_15sdp"
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_mobile_num" />
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar">
+
+        <com.hbb20.CountryCodePicker
+            app:ccp_contentColor="@color/colorText4"
+            android:id="@+id/ccp2"
+            app:ccp_useFlagEmoji="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:ccp_flagBorderColor="@color/black"
+            app:ccp_showArrow="true"
+            app:ccp_showFlag="true"
+            android:gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            app:ccp_showPhoneCode="true"
+            app:ccp_showNameCode="false"/>
+        <EditText
+            android:textColor="@color/colorText"
+            android:textColorHint="@color/colorText4"
+            android:id="@+id/phone"
+            android:background="@drawable/into_button_back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="phone"
+            android:layout_gravity="center"
+            android:padding="15dp"
+            android:hint="1024952995"
+            android:maxLength="10"/>
+    </LinearLayout>
+    <View
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_15sdp"
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        android:layout_marginTop="1dp"
+        android:outlineAmbientShadowColor="@color/material_dynamic_neutral20"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_margin="@dimen/_15sdp"
+        android:id="@+id/next1_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/firstbuttonback"
+        android:gravity="center"
+        android:text="Next"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

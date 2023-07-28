@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundLogin"
+    tools:context=".Step3CreateAccount">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topappbar"
+            app:titleTextColor="@color/colorText"
+            app:navigationIconTint="@color/colorText"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:title="Create Account" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <TextView
+        android:textColor="@color/colorText"
+        android:id="@+id/text_mobile_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/step_5"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/appbar" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_16sdp"
+        android:layout_margin="@dimen/_15sdp"
+        android:progress="100"
+        android:progressDrawable="@drawable/custom_progressbar"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_mobile_num" />
+
+
+
+    <EditText
+        android:textColor="@color/colorText"
+        android:textColorHint="@color/colorText4"
+        android:id="@+id/Bank_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:ems="10"
+        android:hint="Bank name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+ <EditText
+     android:textColor="@color/colorText"
+     android:textColorHint="@color/colorText4"
+     android:id="@+id/Account_personal_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:ems="10"
+        android:hint="Account personal name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Bank_name" />
+<EditText
+    android:textColor="@color/colorText"
+    android:textColorHint="@color/colorText4"
+
+    android:id="@+id/Account_number"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:ems="10"
+        android:hint="Account number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Account_personal_name" />
+
+<EditText
+    android:textColor="@color/colorText"
+    android:textColorHint="@color/colorText4"
+
+    android:id="@+id/IBAN_number"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:ems="10"
+        android:hint="IBAN number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Account_number" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/next2_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:background="@drawable/firstbuttonback"
+        android:gravity="center"
+        android:text="Submit information"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/IBAN_number"
+        tools:layout_editor_absoluteX="19dp" />
+
+    <TextView
+        android:textColor="@color/colorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:text="@string/privacy"
+        app:layout_constraintTop_toBottomOf="@+id/next2_btn"
+        tools:layout_editor_absoluteX="19dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
