@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AtmoDrive2</string>
+    <string name="app_name">CapAtmoDrive</string>
     <string name="enter_mobile_number_text">Enter mobile number to find your account and send OTP code.</string>
     <string name="verify_text">Hello<font color="#00A6A6"> Mostafa </font>. Enter the OTP code sent to you at mobile number <font color="#00A6A6">+201024952995</font></string>
     <string name="reset_pass">Create new password to your account with mobile number<font color="#00A6A6"> +20 114 933 6618</font></string>
