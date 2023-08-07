@@ -10,7 +10,7 @@ import android.widget.ProgressBar
 import androidx.navigation.fragment.findNavController
 
 class CreateAccount : Fragment() {
-
+ lateinit var button: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -21,9 +21,10 @@ class CreateAccount : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val button=view.findViewById<Button>(R.id.next1_btn)
+         button=view.findViewById<Button>(R.id.next1_btn)
         button.setOnClickListener {
-            findNavController().navigate(R.id.action_createAccount_to_step2CreateAccount)
+            val action=CreateAccountDirections.actionCreateAccountToStep2CreateAccount()
+            findNavController().navigate(action)
         }
     }
 }
