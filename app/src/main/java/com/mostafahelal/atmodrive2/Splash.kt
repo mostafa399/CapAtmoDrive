@@ -25,7 +25,6 @@ class Splash : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         android.os.Handler(Looper.getMainLooper()).postDelayed({
-
             val action=SplashDirections.actionSplashToIntro()
             findNavController().navigate(action)
 
