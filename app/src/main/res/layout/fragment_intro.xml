@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mapview"
-    tools:context=".Intro">
+    tools:context=".auth.presentation.view.IntroFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="#BE000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.25" />
+            app:layout_constraintGuide_percent="0.20" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -39,12 +39,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.50" />
+            app:layout_constraintGuide_percent="0.60" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gideline2"
@@ -61,6 +61,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="0dp"
@@ -71,61 +72,65 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView" />
+
             <LinearLayout
-                android:weightSum="4"
                 android:id="@+id/linearLayout3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/into_button_back"
                 android:orientation="horizontal"
+                android:weightSum="4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2">
 
                 <com.hbb20.CountryCodePicker
-
-                    app:ccp_useFlagEmoji="true"
                     android:id="@+id/ccp"
-                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     app:ccp_contentColor="@color/colorText4"
                     app:ccp_showArrow="true"
                     app:ccp_showFlag="true"
-                    android:gravity="center"
-                    android:layout_marginStart="5dp"
+                    app:ccp_showNameCode="false"
                     app:ccp_showPhoneCode="true"
-                    app:ccp_showNameCode="false"/>
+                    app:ccp_useFlagEmoji="true" />
+
                 <EditText
+                    android:id="@+id/phoneEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="2"
                     android:background="@color/backgroundSplashScreen"
-                    android:textColorHint="@color/colorText4"
-                    android:textColor="@color/colorText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:hint="@string/_1024952995"
                     android:inputType="phone"
-                    android:layout_gravity="center"
+                    android:maxLength="10"
                     android:padding="15dp"
-                    android:layout_marginEnd="5dp"
-                    android:hint="1024952995"
-                    android:maxLength="10"/>
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorText4" />
+
                 <TextView
-                    android:background="@color/backgroundSplashScreen"
                     android:id="@+id/send_code"
-                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="send code"
-                    android:textColor="#00A6A6"
-                    android:gravity="center"/>
+                    android:layout_weight="1"
+                    android:background="@color/backgroundSplashScreen"
+                    android:gravity="center"
+                    android:text="@string/send_code"
+                    android:textColor="#00A6A6" />
 
 
             </LinearLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="@dimen/_5sdp"
                 android:id="@+id/constraintLayout11"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/into_button_back"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -134,18 +139,18 @@
 
                 <EditText
 
-                    android:id="@+id/editText"
+                    android:id="@+id/otpCode"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginStart="16dp"
                     android:background="@color/backgroundSplashScreen"
                     android:hint="Otp Code"
-                    android:textColorHint="@color/colorText4"
-                    android:textColor="@color/colorText"
                     android:inputType="phone"
                     android:maxLength="10"
                     android:padding="15dp"
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorText4"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteY="0dp" />
 
@@ -161,52 +166,25 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.937"
-                    app:layout_constraintStart_toEndOf="@+id/editText"
+                    app:layout_constraintStart_toEndOf="@+id/otpCode"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.514" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/login_btn"
-                android:background="@drawable/firstbuttonback"
-                android:text="Login"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/firstbuttonback"
                 android:gravity="center"
+                android:text="@string/login"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
-
-            <TextView
-                android:id="@+id/donthaveacc"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Don’t have a captain account?"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_btn" />
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/create_acc_btn"
-                android:background="@drawable/secondbuttonback"
-                android:text="Create Account"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/donthaveacc" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

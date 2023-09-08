@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundLogin"
-    tools:context=".Step3CreateAccount">
+    tools:context=".auth.presentation.view.CreateAccountPersonalInfoFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
+        android:background="@color/backgroundLogin"
+
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,6 +19,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topappbar"
+            android:background="@color/backgroundLogin"
             app:titleTextColor="@color/colorText"
             app:navigationIconTint="@color/colorText"
             android:layout_width="match_parent"
@@ -42,7 +45,7 @@
         android:id="@+id/text_mobile_num"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/step_5"
+        android:text="@string/step_3"
         android:textSize="@dimen/_12ssp"
         app:layout_constraintLeft_toRightOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/appbar" />
@@ -54,7 +57,7 @@
         android:layout_height="@dimen/_16sdp"
         android:layout_margin="@dimen/_15sdp"
         android:progress="100"
-        android:progressDrawable="@drawable/custom_progressbar"
+        android:progressDrawable="@drawable/firstbuttonback"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,14 +119,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Account_number" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/next2_btn"
+    <Button
+        android:id="@+id/submit_and_continue_bank"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_40sdp"
         android:layout_margin="@dimen/_15sdp"
         android:background="@drawable/firstbuttonback"
         android:gravity="center"
-        android:text="Submit information"
+        android:text="@string/submit_information"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/IBAN_number"
         tools:layout_editor_absoluteX="19dp" />
@@ -134,7 +137,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_15sdp"
         android:text="@string/privacy"
-        app:layout_constraintTop_toBottomOf="@+id/next2_btn"
+        app:layout_constraintTop_toBottomOf="@+id/submit_and_continue_bank"
         tools:layout_editor_absoluteX="19dp" />
 
 

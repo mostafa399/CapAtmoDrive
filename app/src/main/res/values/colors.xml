@@ -7,7 +7,7 @@
     <color name="primary">#00A6A6</color>
     <color name="teal700">#00796B</color>
     <color name="introbackcolor">#BE000000</color>
-
+    <color name="quinary">#F1F4FA</color>
     <color name="backgroundSplashScreen">#FFFFFF</color>
     <color name="backgroundLogin">#FFFFFF</color>
     <color name="colorText">#000000</color>
