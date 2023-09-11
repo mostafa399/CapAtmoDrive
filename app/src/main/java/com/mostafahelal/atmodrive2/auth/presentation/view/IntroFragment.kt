@@ -151,7 +151,7 @@ class IntroFragment : Fragment() {
         }
     }
     private fun observeNavigateToRegister() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.navigateToRegister.collect { networkState ->
                     when (networkState?.status) {
@@ -173,7 +173,7 @@ class IntroFragment : Fragment() {
     }
 
     private fun observeNavigateToMain() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.navigateToMain.collect { networkState ->
                     when (networkState?.status) {

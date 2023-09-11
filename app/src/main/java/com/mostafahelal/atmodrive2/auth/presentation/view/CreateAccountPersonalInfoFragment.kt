@@ -38,6 +38,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class CreateAccountPersonalInfoFragment : Fragment() {
     private var imageType = ""
@@ -132,7 +133,7 @@ class CreateAccountPersonalInfoFragment : Fragment() {
             if(avatar.isNotBlank() && idFront.isNotBlank() && idBack.isNotBlank()){
                 val mobile = args.mobile
                 var isDarkMode = 0
-                viewModel.registerCaptain(mobile,avatar,"deviceToken", "","android"
+                viewModel.registerCaptain(mobile,avatar,"deviceToken", "device_id","android"
                 ,idFront,idBack,
                     "captains/679d4821359d42ce14f4af0d75637fa9807d2c16.png",
                     "captains/679d4821359d42ce14f4af0d75637fa9807d2c16.png",isDarkMode)
@@ -156,11 +157,16 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                     NetworkState.Status.SUCCESS->{
                         val action=CreateAccountPersonalInfoFragmentDirections.actionCreateAccountPersonalInfoFragmentToCreateAccountVehicalInfoFragment()
                         findNavController().navigate(action)
+                        binding.personalInfoProgressBar.visibilityGone()
 
 
                     }
                     NetworkState.Status.FAILED->{
                         showToast(it.msg.toString())
+                        binding.personalInfoProgressBar.visibilityGone()
+                    }
+                    NetworkState.Status.RUNNING ->{
+                        binding.personalInfoProgressBar.visibilityVisible()
                     }
 
                     else -> {
@@ -171,29 +177,55 @@ class CreateAccountPersonalInfoFragment : Fragment() {
         }
     }
 
-    private fun observeOnUploadFile() {
-        lifecycleScope.launch {
-         viewModel.mainEvent.collect{network->
-                when(network?.status){
-                    NetworkState.Status.SUCCESS->{
-                        val data = network.data as Resource<UploadImageResponse>
-                        val image = data.getData()?.data.toString()
-                        imageUploaded(image)
-                    }
-                    NetworkState.Status.FAILED->{
-                        showToast(network.msg.toString())
-                        Log.d("Mostafa", network.msg.toString() )
 
-                    }
-
-                    else -> {
-                        Unit
-                    }
+//    private fun observeOnUploadFile() {
+//        lifecycleScope.launch {
+//         viewModel.mainEvent.collect{network->
+//                when(network?.status){
+//                    NetworkState.Status.SUCCESS->{
+//                        val data = network.data as Resource<UploadImageResponse>
+//                        val image = data.getData()?.data.toString()
+//                        imageUploaded(image)
+//                    }
+//                    NetworkState.Status.FAILED->{
+//                        showToast(network.msg.toString())
+//                        Log.d("Mostafa", network.msg.toString() )
+//
+//                    }
+//
+//                    else -> {
+//                        Unit
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
+private fun observeOnUploadFile() {
+    lifecycleScope.launch {
+        viewModel.mainEvent.collect {
+            when (it?.status) {
+                NetworkState.Status.SUCCESS -> {
+                    binding.personalInfoProgressBar.visibilityGone()
+                    val image = it.data as String
+                    imageUploaded(image)
                 }
+                NetworkState.Status.FAILED -> {
+                    showToast(it.msg.toString())
+                    Log.d("Mostafa", it.msg.toString())
+                    binding.personalInfoProgressBar.visibilityGone()
 
+                }
+                NetworkState.Status.RUNNING ->{
+                    binding.personalInfoProgressBar.visibilityVisible()
+                }
+                else -> {
+                    Unit
+                }
             }
         }
     }
+}
 
     private fun setUpImagePicker(){
         ImagePicker.with(this)
@@ -270,7 +302,7 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                 avatar = image
                 binding.apply {
                     uploadPersonalPhoto.visibilityGone()
-                    deletePersonalPhoto.visibilityGone()
+                    deletePersonalPhoto.visibilityVisible()
                     personalCaptainImage.disable()
                 }
             }
@@ -278,7 +310,7 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                 idFront = image
                 binding.apply {
                     uploadIdFront.visibilityGone()
-                    deleteIdFront.visibilityGone()
+                    deleteIdFront.visibilityVisible()
                     nationalIdFrontImage.disable()
                 }
             }
@@ -286,7 +318,7 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                 idBack = image
                 binding.apply {
                     uploadIdback.visibilityGone()
-                    deleteIdBack.visibilityGone()
+                    deleteIdBack.visibilityVisible()
                     nationalIdBack.disable()
                 }
             }
