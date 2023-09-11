@@ -21,13 +21,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.internal.ViewUtils.hideKeyboard
+import com.mostafahelal.atmodrive2.auth.data.models.SendCodeResponse
 import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
+import com.mostafahelal.atmodrive2.auth.data.utils.Resource
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.AuthViewModel
 import com.mostafahelal.atmodrive2.databinding.FragmentIntroBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 @AndroidEntryPoint
 class IntroFragment : Fragment() {
@@ -50,8 +54,9 @@ class IntroFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         introBinding=FragmentIntroBinding.bind(view)
-        setupSendOtpCode()
+        introBinding.loginBtn.isEnabled = false
         setupBackPressedHandler()
+        setupSendOtpCode()
         setupVerifyButton()
         introBinding.otpCode.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -95,6 +100,7 @@ class IntroFragment : Fragment() {
                     val phone = "0$phoneNumber"
                     viewModel.sendMobilePhone(phone)
                     observeSendCodeResult()
+                    introBinding.loginBtn.isEnabled = false
                 } else {
                     Toast.makeText(requireContext(), "Phone number does not exist", Toast.LENGTH_SHORT).show()
                 }
@@ -102,6 +108,7 @@ class IntroFragment : Fragment() {
         }
     }
     private fun setupVerifyButton() {
+
         introBinding.loginBtn.setOnClickListener {
             val otpCode = introBinding.otpCode.editableText.toString()
             val phoneNumber = introBinding.phoneEt.editableText.toString()
@@ -122,14 +129,21 @@ class IntroFragment : Fragment() {
                 viewModel.sendCodeResult.collect{networkState->
                     when(networkState?.status){
                         NetworkState.Status.SUCCESS->{
-                            withContext(Dispatchers.Main){
+
                                 Toast.makeText(requireContext(), "Phone number posted to the server", Toast.LENGTH_SHORT).show()
-                            }
+
+                                introBinding.loginBtn.isEnabled = true
+
                         }
                         NetworkState.Status.FAILED->{
                             Log.d("IntroFragment", networkState.msg.toString())
+                        //    introBinding.loginBtn.isEnabled = true
+
                         }
-                        else -> {}
+                        else -> {
+                       //     introBinding.loginBtn.isEnabled = true
+
+                        }
                     }
 
                 }

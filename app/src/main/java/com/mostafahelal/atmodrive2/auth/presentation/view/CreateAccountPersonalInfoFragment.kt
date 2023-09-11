@@ -38,28 +38,24 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class CreateAccountPersonalInfoFragment : Fragment() {
-    private var imageUploading = ""
+    private var imageType = ""
     private var avatar = ""
     private var idFront = ""
     private var idBack = ""
     private var personalPhoto:Uri? = null
     private var idFrontPhoto:Uri? = null
     private var idBackPhoto:Uri? = null
-    private var imageType = ""
+    private var imageUploading = ""
     private val viewModel :AuthViewModel by viewModels()
     private lateinit var binding: FragmentCreateAccountPersonalInfoBinding
     private val args by navArgs<CreateAccountPersonalInfoFragmentArgs>()
 
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding= FragmentCreateAccountPersonalInfoBinding.inflate(layoutInflater)
         return binding.root
        }
@@ -133,7 +129,7 @@ class CreateAccountPersonalInfoFragment : Fragment() {
         }
 
         binding.submitAndContinuePersonal.setOnClickListener {
-            if(!avatar.isNullOrBlank() && !idFront.isNullOrBlank() && !idBack.isNullOrBlank()){
+            if(avatar.isNotBlank() && idFront.isNotBlank() && idBack.isNotBlank()){
                 val mobile = args.mobile
                 var isDarkMode = 0
                 viewModel.registerCaptain(mobile,avatar,"deviceToken", "","android"
@@ -158,7 +154,6 @@ class CreateAccountPersonalInfoFragment : Fragment() {
          viewModel.registerState.collect{
                 when(it?.status){
                     NetworkState.Status.SUCCESS->{
-                        val data=it.data
                         val action=CreateAccountPersonalInfoFragmentDirections.actionCreateAccountPersonalInfoFragmentToCreateAccountVehicalInfoFragment()
                         findNavController().navigate(action)
 
@@ -166,7 +161,6 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                     }
                     NetworkState.Status.FAILED->{
                         showToast(it.msg.toString())
-                        Log.d("Mostafa", it.msg.toString() )
                     }
 
                     else -> {
@@ -179,16 +173,16 @@ class CreateAccountPersonalInfoFragment : Fragment() {
 
     private fun observeOnUploadFile() {
         lifecycleScope.launch {
-         viewModel.mainEvent.collect{
-                when(it?.status){
+         viewModel.mainEvent.collect{network->
+                when(network?.status){
                     NetworkState.Status.SUCCESS->{
-                        val data = it.data as Resource<UploadImageResponse>
+                        val data = network.data as Resource<UploadImageResponse>
                         val image = data.getData()?.data.toString()
                         imageUploaded(image)
                     }
                     NetworkState.Status.FAILED->{
-                        showToast(it.msg.toString())
-                        Log.d("Mostafa", it.msg.toString() )
+                        showToast(network.msg.toString())
+                        Log.d("Mostafa", network.msg.toString() )
 
                     }
 
