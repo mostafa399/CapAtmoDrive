@@ -32,6 +32,9 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_IntroFragment_to_CreateAccountVehicalInfoFragment"
+            app:destination="@id/CreateAccountVehicalInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/CreateAccountPersonalInfoFragment"

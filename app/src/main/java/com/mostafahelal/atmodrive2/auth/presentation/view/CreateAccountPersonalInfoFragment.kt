@@ -13,14 +13,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.mostafahelal.atmodrive2.auth.data.models.UploadImageResponse
 import com.mostafahelal.atmodrive2.auth.data.utils.Constants
 import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
-import com.mostafahelal.atmodrive2.auth.data.utils.Resource
 import com.mostafahelal.atmodrive2.auth.data.utils.disable
 import com.mostafahelal.atmodrive2.auth.data.utils.enabled
 import com.mostafahelal.atmodrive2.auth.data.utils.getData
@@ -32,6 +32,7 @@ import com.mostafahelal.atmodrive2.databinding.FragmentCreateAccountPersonalInfo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -82,6 +83,9 @@ class CreateAccountPersonalInfoFragment : Fragment() {
             if (personalPhoto != null){
                 uploadImage(personalPhoto!!)
                 imageUploading = "PersonalPhoto"
+                binding.personalInfoProgressBar.visibilityVisible()
+                blockUI(true)
+
             }
         }
 
@@ -104,6 +108,10 @@ class CreateAccountPersonalInfoFragment : Fragment() {
             if (idFrontPhoto != null){
                 uploadImage(idFrontPhoto!!)
                 imageUploading = "nationalIdFrontImage"
+                binding.personalInfoProgressBar.visibilityVisible()
+                blockUI(true)
+
+
             }
         }
 
@@ -126,6 +134,8 @@ class CreateAccountPersonalInfoFragment : Fragment() {
             if (idBackPhoto != null){
                 uploadImage(idBackPhoto!!)
                 imageUploading = "nationalIdBack"
+                binding.personalInfoProgressBar.visibilityVisible()
+                blockUI(true)
             }
         }
 
@@ -148,25 +158,29 @@ class CreateAccountPersonalInfoFragment : Fragment() {
         observeOnUploadFile()
         }
 
-    private fun observeOnRegisterCaptain() {
 
-        lifecycleScope.launch {
-
+        private fun observeOnRegisterCaptain() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
          viewModel.registerState.collect{
                 when(it?.status){
                     NetworkState.Status.SUCCESS->{
+                        withContext(Dispatchers.Main){
                         val action=CreateAccountPersonalInfoFragmentDirections.actionCreateAccountPersonalInfoFragmentToCreateAccountVehicalInfoFragment()
                         findNavController().navigate(action)
                         binding.personalInfoProgressBar.visibilityGone()
-
-
+                        }
                     }
                     NetworkState.Status.FAILED->{
+                        withContext(Dispatchers.Main){
                         showToast(it.msg.toString())
                         binding.personalInfoProgressBar.visibilityGone()
                     }
+                    }
                     NetworkState.Status.RUNNING ->{
+                        withContext(Dispatchers.Main){
                         binding.personalInfoProgressBar.visibilityVisible()
+                    }
                     }
 
                     else -> {
@@ -175,56 +189,42 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                 }
             }
         }
-    }
-
-
-//    private fun observeOnUploadFile() {
-//        lifecycleScope.launch {
-//         viewModel.mainEvent.collect{network->
-//                when(network?.status){
-//                    NetworkState.Status.SUCCESS->{
-//                        val data = network.data as Resource<UploadImageResponse>
-//                        val image = data.getData()?.data.toString()
-//                        imageUploaded(image)
-//                    }
-//                    NetworkState.Status.FAILED->{
-//                        showToast(network.msg.toString())
-//                        Log.d("Mostafa", network.msg.toString() )
-//
-//                    }
-//
-//                    else -> {
-//                        Unit
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-private fun observeOnUploadFile() {
-    lifecycleScope.launch {
-        viewModel.mainEvent.collect {
-            when (it?.status) {
-                NetworkState.Status.SUCCESS -> {
-                    binding.personalInfoProgressBar.visibilityGone()
-                    val image = it.data as String
-                    imageUploaded(image)
-                }
-                NetworkState.Status.FAILED -> {
-                    showToast(it.msg.toString())
-                    Log.d("Mostafa", it.msg.toString())
-                    binding.personalInfoProgressBar.visibilityGone()
-
-                }
-                NetworkState.Status.RUNNING ->{
-                    binding.personalInfoProgressBar.visibilityVisible()
-                }
-                else -> {
-                    Unit
-                }
-            }
         }
     }
+          private fun observeOnUploadFile() {
+            lifecycleScope.launch (Dispatchers.IO){
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                    viewModel.mainEvent.collect {
+                    when (it?.status) {
+                        NetworkState.Status.SUCCESS -> {
+                            withContext(Dispatchers.Main){
+                            blockUI(false)
+                            binding.personalInfoProgressBar.visibilityGone()
+                            }
+                            val image = it.data as String
+                            imageUploaded(image)
+                        }
+                        NetworkState.Status.FAILED -> {
+                            withContext(Dispatchers.Main) {
+                                blockUI(false)
+                                showToast(it.msg.toString())
+                                Log.d("Mostafa", it.msg.toString())
+                                binding.personalInfoProgressBar.visibilityGone()
+                            }
+                        }
+                        NetworkState.Status.RUNNING ->{
+                            withContext(Dispatchers.Main){
+                            blockUI(true)
+                            binding.personalInfoProgressBar.visibilityVisible()
+                        }
+                        }
+                        else -> {
+                            Unit
+                        }
+                    }
+                }
+    }
+            }
 }
 
     private fun setUpImagePicker(){
@@ -323,7 +323,36 @@ private fun observeOnUploadFile() {
                 }
             }
         }
-
     }
+    private fun blockUI(blocked: Boolean){
+        if (blocked){
+            binding.apply {
+                personalCaptainImage.disable()
+                nationalIdFrontImage.disable()
+                nationalIdBack.disable()
+                deletePersonalPhoto.disable()
+                deleteIdFront.disable()
+                deleteIdBack.disable()
+                uploadPersonalPhoto.disable()
+                uploadIdFront.disable()
+                uploadIdback.disable()
+                submitAndContinuePersonal.disable()
+            }
+        }else{
+            binding.apply {
+                personalCaptainImage.enabled()
+                nationalIdFrontImage.enabled()
+                nationalIdBack.enabled()
+                deletePersonalPhoto.enabled()
+                deleteIdFront.enabled()
+                deleteIdBack.enabled()
+                uploadPersonalPhoto.enabled()
+                uploadIdFront.enabled()
+                uploadIdback.enabled()
+                submitAndContinuePersonal.enabled()
+            }
+        }
+    }
+
 
 }

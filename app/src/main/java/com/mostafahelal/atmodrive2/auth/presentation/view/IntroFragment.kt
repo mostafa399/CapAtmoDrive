@@ -53,41 +53,41 @@ class IntroFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        introBinding=FragmentIntroBinding.bind(view)
-        introBinding.loginBtn.isEnabled = false
-        setupBackPressedHandler()
-        setupSendOtpCode()
-        setupVerifyButton()
-        introBinding.otpCode.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+                introBinding=FragmentIntroBinding.bind(view)
+                introBinding.loginBtn.isEnabled = false
+                setupBackPressedHandler()
+                introBinding.otpCode.addTextChangedListener(object :TextWatcher{
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                        }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.length == 4) {
-                    // Hide the keyboard
-                    hideKeyboard()
-                }
-            }
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                            if (s?.length == 4) {
+                                // Hide the keyboard
+                                hideKeyboard()
+                            }
+                        }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
+                        override fun afterTextChanged(s: Editable?) {
+                        }
 
-        })
-        introBinding.phoneEt.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+                    })
+                introBinding.phoneEt.addTextChangedListener(object :TextWatcher{
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                        }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.length == 10) {
-                    // Hide the keyboard
-                    hideKeyboard()
-                }
-            }
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                            if (s?.length == 10) {
+                                // Hide the keyboard
+                                hideKeyboard()
+                            }
+                        }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
+                        override fun afterTextChanged(s: Editable?) {
+                        }
 
-        })
+                    })
+                setupSendOtpCode()
+                setupVerifyButton()
 
     }
 
@@ -124,15 +124,18 @@ class IntroFragment : Fragment() {
         imm.hideSoftInputFromWindow(introBinding.otpCode.windowToken, 0)
     }
     private fun observeSendCodeResult(){
-        lifecycleScope.launch {
+        lifecycleScope.launch (Dispatchers.IO){
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.sendCodeResult.collect{networkState->
                     when(networkState?.status){
                         NetworkState.Status.SUCCESS->{
 
-                                Toast.makeText(requireContext(), "Phone number posted to the server", Toast.LENGTH_SHORT).show()
 
-                                introBinding.loginBtn.isEnabled = true
+                               withContext(Dispatchers.Main){
+                                   Toast.makeText(requireContext(), "Phone number posted to the server", Toast.LENGTH_SHORT).show()
+                                   introBinding.loginBtn.isEnabled = true
+
+                               }
 
                         }
                         NetworkState.Status.FAILED->{
@@ -151,13 +154,14 @@ class IntroFragment : Fragment() {
         }
     }
     private fun observeNavigateToRegister() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.navigateToRegister.collect { networkState ->
                     when (networkState?.status) {
                         NetworkState.Status.SUCCESS -> {
                             val phone=introBinding.phoneEt.editableText.toString()
                             withContext(Dispatchers.Main){
+//                                val action=IntroFragmentDirections.actionIntroFragmentToCreateAccountVehicalInfoFragment()
                                 val action=IntroFragmentDirections.actionIntroFragmentToCreateAccountPersonalInfoFragment("0$phone")
                                 findNavController().navigate(action)
                             }}
@@ -173,7 +177,7 @@ class IntroFragment : Fragment() {
     }
 
     private fun observeNavigateToMain() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.navigateToMain.collect { networkState ->
                     when (networkState?.status) {

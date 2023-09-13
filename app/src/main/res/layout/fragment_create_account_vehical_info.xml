@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundLogin"
-    tools:context=".auth.presentation.view.CreateAccountPersonalInfoFragment">
-
+    tools:context=".auth.presentation.view.CreateAccountVehicalInfoFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundLogin"
+        android:padding="@dimen/_16sdp">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:background="@color/backgroundLogin"
-
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +38,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/guide1"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -48,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="@string/step_2_vehical_information"
         android:textSize="@dimen/_12ssp"
-        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:layout_constraintLeft_toRightOf="@id/guide1"
         app:layout_constraintTop_toBottomOf="@+id/appbar" />
 
     <ProgressBar
@@ -57,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/_16sdp"
         android:layout_margin="@dimen/_15sdp"
-        android:progress="80"
+        android:progress="60"
         android:progressDrawable="@drawable/custom_progressbar"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,8 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text_mobile_num" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        style="?attr/bottomSheetStyle"
-        android:id="@+id/personalCaptainImage"
+        android:id="@+id/carImageLay"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_90sdp"
         android:layout_margin="@dimen/_15sdp"
@@ -77,16 +79,7 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/Car_images_6_images"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <LinearLayout
+        <LinearLayout
                 android:orientation="horizontal"
                 android:weightSum="6"
                 android:layout_width="match_parent"
@@ -135,7 +128,8 @@
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="32dp"
-                android:src="@drawable/image_add"
+                android:src="@drawable/baseline_add_a_photo_24"
+                android:background="@drawable/rounded_handle_bg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
@@ -156,57 +150,36 @@
 
             <ImageView
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:id="@+id/deleteImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/deleteImage6Images"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"  android:visibility="gone"
+                android:background="@drawable/rounded_handle_bg"
                 android:src="@drawable/baseline_delete_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/VehicalText"
                 app:layout_constraintVertical_bias="0.809" />
 
-            <ImageView
-                android:id="@+id/doneImage"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/baseline_done_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/deleteImage"
-                app:layout_constraintTop_toBottomOf="@+id/VehicalText"
-                app:layout_constraintVertical_bias="0.809" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        style="?attr/bottomSheetStyle"
-        android:id="@+id/nationalIdFrontImage"
-        android:layout_width="@dimen/_139sdp"
+        android:id="@+id/carFrontLicence"
+        android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_90sdp"
         android:layout_margin="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/dotted_border"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personalCaptainImage"
+        app:layout_constraintTop_toBottomOf="@+id/carImageLay"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-        >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/front_car_licence"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/Car_licence_front_image"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="32dp"
-                android:src="@drawable/image_add"
+                android:src="@drawable/baseline_add_a_photo_24"
+                android:background="@drawable/rounded_handle_bg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
@@ -224,12 +197,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Car_licence_front_image" />
-
+            <ImageView
+                android:id="@+id/img_license_front"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
             <ImageView
                 android:id="@+id/delete_front_car_licence_image"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:visibility="gone"
+                android:background="@drawable/rounded_handle_bg"
                 android:src="@drawable/baseline_delete_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -239,45 +221,35 @@
             <ImageView
                 android:id="@+id/done_front_car_licence_image"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:background="@drawable/rounded_handle_bg"
                 android:src="@drawable/baseline_done_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/delete_front_car_licence_image"
                 app:layout_constraintTop_toBottomOf="@+id/car_licence_text_front"
                 app:layout_constraintVertical_bias="0.809" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        style="?attr/bottomSheetStyle"
-        android:id="@+id/constraintLayout6"
-        android:layout_width="@dimen/_139sdp"
+        android:id="@+id/back_car_licence_layout"
+        android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_90sdp"
         android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/dotted_border"
-        app:layout_constraintBottom_toBottomOf="@+id/nationalIdFrontImage"
+        app:layout_constraintBottom_toBottomOf="@+id/carFrontLicence"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nationalIdFrontImage"
+        app:layout_constraintTop_toTopOf="@+id/carFrontLicence"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-        >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/back_car_licence"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent">
-
-            <ImageView
+          <ImageView
                 android:id="@+id/Car_licence_back_image"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="32dp"
-                android:src="@drawable/image_add"
+                android:src="@drawable/baseline_add_a_photo_24"
+                android:background="@drawable/rounded_handle_bg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
@@ -297,10 +269,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/Car_licence_back_image" />
 
             <ImageView
+                android:id="@+id/img_license_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:visibility="gone"
                 android:id="@+id/delete_back_car_licence_image"
-                android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:background="@drawable/rounded_handle_bg"
                 android:src="@drawable/baseline_delete_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -308,16 +291,17 @@
                 app:layout_constraintVertical_bias="0.809" />
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/done_back_car_licence_image"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:background="@drawable/rounded_handle_bg"
                 android:src="@drawable/baseline_done_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/delete_back_car_licence_image"
                 app:layout_constraintTop_toBottomOf="@+id/car_licence_text_back"
                 app:layout_constraintVertical_bias="0.809" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <Button
         android:id="@+id/submit_and_continue_vehical"
@@ -330,12 +314,21 @@
         android:textStyle="normal"
         android:text="@string/submit_and_continue"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/nationalIdFrontImage"
+        app:layout_constraintTop_toBottomOf="@+id/carFrontLicence"
         tools:layout_editor_absoluteX="19dp" />
+    <ProgressBar
+        android:id="@+id/vehicle_info_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/submit_and_continue_vehical" />
 
-
-
-
-
-
+</androidx.constraintlayout.widget.ConstraintLayout>
+   <include
+       android:id="@+id/Image_item"
+       layout="@layout/item_bottom_sheet"
+       android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

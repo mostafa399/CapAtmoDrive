@@ -33,7 +33,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/guide1"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:text="@string/step_1_personal_information"
         android:textSize="@dimen/_12ssp"
-        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:layout_constraintLeft_toRightOf="@id/guide1"
         app:layout_constraintTop_toBottomOf="@+id/appbar" />
 
     <ProgressBar
@@ -114,9 +114,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_4sdp"
             android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_delete_24"
             android:padding="@dimen/_4sdp"
             android:visibility="gone"
-            android:src="@drawable/baseline_delete_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
         <ImageView
@@ -125,8 +125,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_4sdp"
             android:background="@drawable/rounded_handle_bg"
-            android:padding="@dimen/_4sdp"
             android:src="@drawable/baseline_done_24"
+            android:padding="@dimen/_4sdp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/delete_personal_photo"/>
