@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundLogin"
+    android:background="@color/Background"
     tools:context=".auth.presentation.view.CreateAccountVehicalInfoFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundLogin"
+        android:background="@color/Background"
         android:padding="@dimen/_16sdp">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:background="@color/backgroundLogin"
+        android:background="@color/Background"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,10 +22,10 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topappbar"
-            android:background="@color/backgroundLogin"
+            android:background="@color/Background"
 
-            app:titleTextColor="@color/colorText"
-            app:navigationIconTint="@color/colorText"
+            app:titleTextColor="@color/Title"
+            app:navigationIconTint="@color/Title"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="@dimen/_15sdp"
@@ -45,7 +45,7 @@
         app:layout_constraintGuide_percent="0.15" />
 
     <TextView
-        android:textColor="@color/colorText"
+        android:textColor="@color/Title"
         android:id="@+id/text_mobile_num"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

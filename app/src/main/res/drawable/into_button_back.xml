@@ -4,7 +4,7 @@
         android:radius="7dp"
         />
     <solid
-        android:color="@color/backgroundSplashScreen"
+        android:color="@color/backgroundLogin"
         />
 
 </shape>

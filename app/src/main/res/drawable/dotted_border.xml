@@ -5,7 +5,7 @@
             <solid android:color="@android:color/transparent" />
             <stroke
                 android:width="2dp"
-                android:color="@android:color/darker_gray"
+                android:color="@color/Hint"
                 android:dashWidth="4dp"
                 android:dashGap="4dp" />
             <corners android:radius="8dp" />

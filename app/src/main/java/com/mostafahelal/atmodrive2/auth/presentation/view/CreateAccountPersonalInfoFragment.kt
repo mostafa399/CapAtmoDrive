@@ -19,14 +19,18 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
 import com.mostafahelal.atmodrive2.auth.data.utils.Constants
 import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
+import com.mostafahelal.atmodrive2.auth.data.utils.Resource
 import com.mostafahelal.atmodrive2.auth.data.utils.disable
 import com.mostafahelal.atmodrive2.auth.data.utils.enabled
 import com.mostafahelal.atmodrive2.auth.data.utils.getData
 import com.mostafahelal.atmodrive2.auth.data.utils.showToast
 import com.mostafahelal.atmodrive2.auth.data.utils.visibilityGone
 import com.mostafahelal.atmodrive2.auth.data.utils.visibilityVisible
+import com.mostafahelal.atmodrive2.auth.domain.model.FileUploadResponse
+import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.AuthViewModel
 import com.mostafahelal.atmodrive2.databinding.FragmentCreateAccountPersonalInfoBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,18 +42,24 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class CreateAccountPersonalInfoFragment : Fragment() {
+
     private var imageType = ""
+    private var imageUploading = ""
     private var avatar = ""
     private var idFront = ""
     private var idBack = ""
+    private var LicenceFront = ""
+    private var LicenceBack = ""
     private var personalPhoto:Uri? = null
     private var idFrontPhoto:Uri? = null
     private var idBackPhoto:Uri? = null
-    private var imageUploading = ""
+    private var LicenceFrontPhoto:Uri? = null
+    private var LicenceBackPhoto:Uri? = null
     private val viewModel :AuthViewModel by viewModels()
     private lateinit var binding: FragmentCreateAccountPersonalInfoBinding
     private val args by navArgs<CreateAccountPersonalInfoFragmentArgs>()
@@ -88,9 +98,6 @@ class CreateAccountPersonalInfoFragment : Fragment() {
 
             }
         }
-
-
-        /////////////////////
         binding.nationalIdFrontImage.setOnClickListener {
             imageType  = "nationalIdFrontImage"
             setUpImagePicker()
@@ -115,8 +122,6 @@ class CreateAccountPersonalInfoFragment : Fragment() {
             }
         }
 
-
-        /////////////////////
         binding.nationalIdBack.setOnClickListener {
             imageType  = "nationalIdBack"
             setUpImagePicker()
@@ -139,23 +144,64 @@ class CreateAccountPersonalInfoFragment : Fragment() {
             }
         }
 
+
+        binding.drivingLicenseFrontLayout.setOnClickListener {
+                imageType  = "drivingLicenseFrontLayout"
+                setUpImagePicker()
+            }
+        binding.deletelicenceFront.setOnClickListener {
+            binding.apply {
+                drivingLicenseFront.setImageURI(null)
+                deletelicenceFront.visibilityGone()
+                uploadLicenceFront.visibilityGone()
+                drivingLicenseFrontLayout.enabled()
+            }
+            LicenceFront = ""
+        }
+        binding.uploadLicenceFront.setOnClickListener {
+            if (LicenceFrontPhoto != null){
+                uploadImage(LicenceFrontPhoto!!)
+                imageUploading = "drivingLicenseFrontLayout"
+                binding.personalInfoProgressBar.visibilityVisible()
+                blockUI(true)
+            }
+        }
+
+        binding.drivingLicenseBackLayout.setOnClickListener {
+                imageType  = "drivingLicenseBackLayout"
+                setUpImagePicker()
+            }
+        binding.deleteLicenceBack.setOnClickListener {
+            binding.apply {
+                drivingLicenseBack.setImageURI(null)
+                deleteLicenceBack.visibilityGone()
+                uploadLicenceback.visibilityGone()
+                drivingLicenseBackLayout.enabled()
+            }
+            LicenceBack = ""
+        }
+        binding.uploadLicenceback.setOnClickListener {
+            if (LicenceBackPhoto != null){
+                uploadImage(LicenceBackPhoto!!)
+                imageUploading = "drivingLicenseBackLayout"
+                binding.personalInfoProgressBar.visibilityVisible()
+                blockUI(true)
+            }
+        }
+
         binding.submitAndContinuePersonal.setOnClickListener {
-            if(avatar.isNotBlank() && idFront.isNotBlank() && idBack.isNotBlank()){
+            if(avatar.isNotBlank() && idFront.isNotBlank() && idBack.isNotBlank()&&LicenceFront.isNotBlank()&&LicenceBack.isNotBlank()){
                 val mobile = args.mobile
                 var isDarkMode = 0
                 viewModel.registerCaptain(mobile,avatar,"deviceToken", "device_id","android"
-                ,idFront,idBack,
-                    "captains/679d4821359d42ce14f4af0d75637fa9807d2c16.png",
-                    "captains/679d4821359d42ce14f4af0d75637fa9807d2c16.png",isDarkMode)
-
+                ,idFront,idBack, LicenceFront, LicenceBack,isDarkMode)
             }
             else{
                 showToast("upload All images")
-
             }
         }
         observeOnRegisterCaptain()
-        observeOnUploadFile()
+        onUploadFile()
         }
 
 
@@ -191,39 +237,33 @@ class CreateAccountPersonalInfoFragment : Fragment() {
         }
         }
     }
-          private fun observeOnUploadFile() {
-            lifecycleScope.launch (Dispatchers.IO){
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                    viewModel.mainEvent.collect {
-                    when (it?.status) {
+          private fun onUploadFile() {
+            lifecycleScope.launch{
+                    viewModel.mainEvent.collect {networkState->
+                    when (networkState?.status) {
                         NetworkState.Status.SUCCESS -> {
-                            withContext(Dispatchers.Main){
                             blockUI(false)
                             binding.personalInfoProgressBar.visibilityGone()
-                            }
-                            val image = it.data as String
+                            val data = networkState.data as Resource<FileUploadResponse>
+                            val image = data.data?.data.toString()
                             imageUploaded(image)
                         }
                         NetworkState.Status.FAILED -> {
-                            withContext(Dispatchers.Main) {
                                 blockUI(false)
-                                showToast(it.msg.toString())
-                                Log.d("Mostafa", it.msg.toString())
+                                showToast(networkState.msg.toString())
+                                Log.d("Mostafa", networkState.msg.toString())
                                 binding.personalInfoProgressBar.visibilityGone()
-                            }
                         }
                         NetworkState.Status.RUNNING ->{
-                            withContext(Dispatchers.Main){
                             blockUI(true)
                             binding.personalInfoProgressBar.visibilityVisible()
-                        }
                         }
                         else -> {
                             Unit
                         }
                     }
                 }
-    }
+
             }
 }
 
@@ -235,6 +275,7 @@ class CreateAccountPersonalInfoFragment : Fragment() {
     }
     private fun uploadImage(image: Uri) {
         lifecycleScope.launch(Dispatchers.IO) {
+
             val a = decodeFile(image.path)
             val baos = ByteArrayOutputStream()
             a?.compress(Bitmap.CompressFormat.PNG, 100, baos)
@@ -248,12 +289,13 @@ class CreateAccountPersonalInfoFragment : Fragment() {
             val name: RequestBody = Constants.VEHICLE_IMAGE_PATH
                 .toRequestBody("text/plain".toMediaTypeOrNull())
 
-            println("ADD_VEHICLE_UPLOAD_IMAGE  ${image.path}")
-            viewModel.uploadImage(body, name)
+            println("uploadImage  ${image.path}")
+
+            viewModel.uploadImage(part = body, path = name)
 
         }
-
     }
+
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -287,6 +329,24 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                         nationalIdBack.disable()
                     }
                     idBackPhoto = selectedImageUri
+                }
+                "drivingLicenseFrontLayout" -> {
+                    binding.apply {
+                        drivingLicenseFront.setImageURI(selectedImageUri)
+                        deletelicenceFront.visibilityVisible()
+                        uploadLicenceFront.visibilityVisible()
+                        drivingLicenseFrontLayout.disable()
+                    }
+                    LicenceFrontPhoto = selectedImageUri
+                }
+                "drivingLicenseBackLayout" -> {
+                    binding.apply {
+                        drivingLicenseBack.setImageURI(selectedImageUri)
+                        deleteLicenceBack.visibilityVisible()
+                        uploadLicenceback.visibilityVisible()
+                        drivingLicenseBackLayout.disable()
+                    }
+                    LicenceBackPhoto = selectedImageUri
                 }
             }
         }else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -322,6 +382,22 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                     nationalIdBack.disable()
                 }
             }
+            "drivingLicenseFrontLayout" -> {
+                LicenceFront = image
+                binding.apply {
+                    uploadLicenceFront.visibilityGone()
+                    deletelicenceFront.visibilityVisible()
+                    drivingLicenseFrontLayout.disable()
+                }
+            }
+            "drivingLicenseBackLayout" -> {
+                LicenceBack = image
+                binding.apply {
+                    uploadLicenceback.visibilityGone()
+                    deleteLicenceBack.visibilityVisible()
+                    drivingLicenseBackLayout.disable()
+                }
+            }
         }
     }
     private fun blockUI(blocked: Boolean){
@@ -336,6 +412,12 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                 uploadPersonalPhoto.disable()
                 uploadIdFront.disable()
                 uploadIdback.disable()
+                drivingLicenseBackLayout.disable()
+                deleteLicenceBack.disable()
+                uploadLicenceback.disable()
+                drivingLicenseFrontLayout.disable()
+                deletelicenceFront.disable()
+                uploadLicenceFront.disable()
                 submitAndContinuePersonal.disable()
             }
         }else{
@@ -349,6 +431,12 @@ class CreateAccountPersonalInfoFragment : Fragment() {
                 uploadPersonalPhoto.enabled()
                 uploadIdFront.enabled()
                 uploadIdback.enabled()
+                drivingLicenseBackLayout.enabled()
+                deleteLicenceBack.enabled()
+                uploadLicenceback.enabled()
+                drivingLicenseFrontLayout.enabled()
+                deletelicenceFront.enabled()
+                uploadLicenceFront.enabled()
                 submitAndContinuePersonal.enabled()
             }
         }

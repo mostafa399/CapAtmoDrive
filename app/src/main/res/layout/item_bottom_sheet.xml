@@ -1,359 +1,365 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    app:behavior_hideable="false"
-    android:backgroundTint="@color/backgroundLogin"
-    android:orientation="vertical"
     android:id="@+id/car_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/_20sdp"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    android:background="@color/Background"
     app:behavior_peekHeight="0dp"
-    app:layout_constraintHeight_percent="0.80"
-    android:background="@drawable/corner_button_sheet"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    android:layout_height="wrap_content">
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.05" />
+    app:layout_constraintHeight_percent="0.80">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
-            <View
-                android:id="@+id/drag_handle_view"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_6sdp"
-                android:background="@drawable/rounded_handle_bg"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent=".20" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Pick car images"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/_15ssp"
-                app:layout_constraintTop_toBottomOf="@+id/drag_handle_view"
-                app:layout_constraintEnd_toEndOf="@id/guide2"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@id/guide1"
-               />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
 
-            <TextView
-                android:textColor="@color/colorText"
-                android:id="@+id/textView4"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:paddingEnd="@dimen/_100sdp"
-                android:text="Choose clear images for your car from those 6 sides"
-                android:textSize="@dimen/_9ssp"
-                app:layout_constraintEnd_toEndOf="@id/guide2"
-                app:layout_constraintStart_toStartOf="@id/guide1"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+    <View
+        android:id="@+id/drag_handle_view"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_6sdp"
+        android:background="@drawable/rounded_handle_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".20" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/lay1"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_width="@dimen/_140sdp"
-                android:layout_height="@dimen/_92sdp"
-                android:background="@drawable/dotted_border"
-                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-                app:layout_constraintStart_toStartOf="@+id/guide1"
-                app:layout_constraintTop_toBottomOf="@+id/textView4">
-                <ImageView
-                    android:padding="@dimen/_10sdp"
-                    android:src="@drawable/screenshoot2"
-                    android:id="@+id/firstImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pick car images"
+        android:textColor="@color/Title"
+        android:textSize="@dimen/_15ssp"
+        app:layout_constraintEnd_toEndOf="@id/guide2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/guide1"
+        app:layout_constraintTop_toBottomOf="@+id/drag_handle_view" />
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:paddingEnd="@dimen/_100sdp"
+        android:text="Choose clear images for your car from those 6 sides"
+        android:textColor="@color/Title"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintEnd_toEndOf="@id/guide2"
+        app:layout_constraintStart_toStartOf="@id/guide1"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lay1"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_92sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/dotted_border"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:layout_constraintStart_toStartOf="@+id/guide1"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
 
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/addimage1"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_done_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/deleteimage1"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_delete_24"
-                    app:layout_constraintLeft_toRightOf="@id/addimage1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                   />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/lay2"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_width="@dimen/_140sdp"
-                android:layout_height="@dimen/_92sdp"
-                android:background="@drawable/dotted_border"
-                app:layout_constraintEnd_toStartOf="@+id/guide2"
-                app:layout_constraintStart_toEndOf="@+id/lay1"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
-                >
-                <ImageView
-                    android:id="@+id/SecondImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:padding="@dimen/_10sdp"
-                    android:src="@drawable/screenshoot"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/addimage2"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:visibility="gone"
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_done_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-               <ImageView
-                   android:visibility="gone"
-                   android:id="@+id/deleteimage2"
-                   android:layout_width="@dimen/_30sdp"
-                   android:layout_height="@dimen/_30sdp"
-                   android:layout_margin="@dimen/_10sdp"
-                   android:background="@drawable/rounded_handle_bg"
-                   android:src="@drawable/baseline_delete_24"
-                   app:layout_constraintBottom_toBottomOf="parent"
-                   app:layout_constraintLeft_toRightOf="@id/addimage2" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/lay3"
-                android:layout_marginTop="@dimen/_15sdp"
-                style="?attr/bottomSheetStyle"
-                android:layout_width="@dimen/_140sdp"
-                android:layout_height="@dimen/_92sdp"
-                android:background="@drawable/dotted_border"
-                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-                app:layout_constraintStart_toStartOf="@+id/guide1"
-                app:layout_constraintTop_toBottomOf="@+id/lay1">
-                <ImageView
-                    android:id="@+id/thirdImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/screenshoot2"
-                    android:padding="@dimen/_10sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/addimage3"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_done_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/deleteimage3"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_delete_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                   app:layout_constraintLeft_toRightOf="@id/addimage3" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/lay5"
-                android:layout_marginTop="@dimen/_15sdp"
-                style="?attr/bottomSheetStyle"
-                android:layout_width="@dimen/_140sdp"
-                android:layout_height="@dimen/_92sdp"
-                android:background="@drawable/dotted_border"
-                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-                app:layout_constraintStart_toStartOf="@+id/guide1"
-                app:layout_constraintTop_toBottomOf="@+id/lay3">
-
-                <ImageView
-                    android:id="@+id/fifthImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:src="@drawable/screenshoot2"
-                    android:padding="@dimen/_10sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/firstImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/screenshoot2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
+        <ImageView
+            android:id="@+id/addimage1"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_done_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-                <ImageView
-                    android:id="@+id/addimage5"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:visibility="gone"
+        <ImageView
+            android:id="@+id/deleteimage1"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_delete_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/addimage1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_done_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-           <ImageView
-                    android:id="@+id/deleteimage5"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:visibility="gone"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lay2"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_92sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/dotted_border"
+        app:layout_constraintEnd_toStartOf="@+id/guide2"
+        app:layout_constraintStart_toEndOf="@+id/lay1"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
 
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_delete_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/addimage5"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/lay4"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_width="@dimen/_140sdp"
-                android:layout_height="@dimen/_92sdp"
-                android:background="@drawable/dotted_border"
-                app:layout_constraintEnd_toStartOf="@+id/guide2"
-                app:layout_constraintStart_toEndOf="@+id/lay3"
-                app:layout_constraintTop_toBottomOf="@+id/lay2"
-                tools:ignore="MissingConstraints">
+        <ImageView
+            android:id="@+id/SecondImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/screenshoot"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/fourthImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:padding="@dimen/_10sdp"
-                    android:src="@drawable/screenshoot"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/addimage2"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_done_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/addimage4"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_done_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-              <ImageView
-                  android:visibility="gone"
-                  android:id="@+id/deleteimage4"
-                  android:layout_width="@dimen/_30sdp"
-                  android:layout_height="@dimen/_30sdp"
-                  android:layout_margin="@dimen/_10sdp"
-                  android:background="@drawable/rounded_handle_bg"
-                  android:src="@drawable/baseline_delete_24"
-                  app:layout_constraintBottom_toBottomOf="parent"
-                  app:layout_constraintLeft_toRightOf="@id/addimage4" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/lay6"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_width="@dimen/_140sdp"
-                android:layout_height="@dimen/_92sdp"
-                android:background="@drawable/dotted_border"
-                app:layout_constraintEnd_toStartOf="@+id/guide2"
-                app:layout_constraintStart_toEndOf="@+id/lay5"
-                app:layout_constraintTop_toBottomOf="@+id/lay4"
-                tools:ignore="MissingConstraints">
+        <ImageView
+            android:id="@+id/deleteimage2"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_delete_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/addimage2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
-                    android:id="@+id/sixImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:padding="@dimen/_10sdp"
-                    android:src="@drawable/screenshoot"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lay3"
+        style="?attr/bottomSheetStyle"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_92sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/dotted_border"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:layout_constraintStart_toStartOf="@+id/guide1"
+        app:layout_constraintTop_toBottomOf="@+id/lay1">
 
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/addimage6"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_done_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            <ImageView
-                     android:visibility="gone"
-                    android:id="@+id/deleteimage6"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/rounded_handle_bg"
-                    android:src="@drawable/baseline_delete_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/addimage6" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/thirdImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/screenshoot2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/addimage3"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_done_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/deleteimage3"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_delete_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/addimage3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lay5"
+        style="?attr/bottomSheetStyle"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_92sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/dotted_border"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:layout_constraintStart_toStartOf="@+id/guide1"
+        app:layout_constraintTop_toBottomOf="@+id/lay3">
+
+        <ImageView
+            android:id="@+id/fifthImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/screenshoot2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/addimage5"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_done_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/deleteimage5"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_delete_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/addimage5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lay4"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_92sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/dotted_border"
+        app:layout_constraintEnd_toStartOf="@+id/guide2"
+        app:layout_constraintStart_toEndOf="@+id/lay3"
+        app:layout_constraintTop_toBottomOf="@+id/lay2"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/fourthImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/screenshoot"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/addimage4"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_done_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/deleteimage4"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_delete_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/addimage4" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lay6"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_92sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/dotted_border"
+        app:layout_constraintEnd_toStartOf="@+id/guide2"
+        app:layout_constraintStart_toEndOf="@+id/lay5"
+        app:layout_constraintTop_toBottomOf="@+id/lay4"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/sixImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/screenshoot"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/addimage6"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_done_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/deleteimage6"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/rounded_handle_bg"
+            android:src="@drawable/baseline_delete_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/addimage6" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <Button
-                android:id="@+id/next2_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_50sdp"
-                android:layout_marginBottom="@dimen/_50sdp"
-                android:background="@drawable/firstbuttonback"
-                android:gravity="center"
-                android:text="@string/confirm"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guide2"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@id/guide1"
-                app:layout_constraintTop_toBottomOf="@+id/lay6" />
-                <ProgressBar
-                   android:id="@+id/car_images_progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/next2_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/firstbuttonback"
+        android:gravity="center"
+        android:text="@string/confirm"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/guide2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/guide1"
+        app:layout_constraintTop_toBottomOf="@+id/lay6"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/car_images_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/next2_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

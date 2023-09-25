@@ -23,13 +23,18 @@ import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mostafahelal.atmodrive2.R
+import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
 import com.mostafahelal.atmodrive2.auth.data.utils.Constants
 import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
+import com.mostafahelal.atmodrive2.auth.data.utils.Resource
 import com.mostafahelal.atmodrive2.auth.data.utils.disable
 import com.mostafahelal.atmodrive2.auth.data.utils.enabled
+import com.mostafahelal.atmodrive2.auth.data.utils.getData
 import com.mostafahelal.atmodrive2.auth.data.utils.showToast
 import com.mostafahelal.atmodrive2.auth.data.utils.visibilityGone
 import com.mostafahelal.atmodrive2.auth.data.utils.visibilityVisible
+import com.mostafahelal.atmodrive2.auth.domain.model.FileUploadResponse
+import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.AuthViewModel
 import com.mostafahelal.atmodrive2.databinding.FragmentCreateAccountVehicalInfoBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,9 +46,11 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
+
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
-class CreateAccountVehicalInfoFragment : Fragment() {
+class CreateAccountVehicalInfoFragment : Fragment()  {
     private var _binding: FragmentCreateAccountVehicalInfoBinding?=null
     private val binding get() = _binding!!
     private val viewModel:AuthViewModel by viewModels()
@@ -55,8 +62,6 @@ class CreateAccountVehicalInfoFragment : Fragment() {
     private var backLicencePhoto:Uri?=null
     private var imagephoto1:Uri?=null
     private var image1=""
-
-
     private var image2=""
     private var image3=""
     private var image4=""
@@ -280,6 +285,7 @@ class CreateAccountVehicalInfoFragment : Fragment() {
 
             }
         }
+        observeOnUploadFile()
         binding.submitAndContinueVehical.setOnClickListener {
             if (frontLicence.isNotBlank() && backLicence.isNotBlank() && image1.isNotBlank()
                 && image2.isNotBlank()&& image3.isNotBlank()&& image4.isNotBlank()&& image5.isNotBlank()
@@ -289,7 +295,6 @@ class CreateAccountVehicalInfoFragment : Fragment() {
                 showToast("Add all images")
             }
         }
-        observeOnUploadFile()
         observeOnRegisterVehicalInfo()
     }
     private fun setUpImagePicker(){
@@ -320,36 +325,34 @@ class CreateAccountVehicalInfoFragment : Fragment() {
 
     }
     private fun observeOnUploadFile() {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch{
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-            viewModel.mainEvent.collect {
-                when (it?.status) {
+            viewModel.mainEvent.collect {netWorkState->
+                when (netWorkState?.status) {
                     NetworkState.Status.SUCCESS -> {
-                        withContext(Dispatchers.Main) {
-                            blockUI(false)
-                            binding.vehicleInfoProgressBar.visibilityGone()
-                            carImagesPB.visibilityGone()
-                        }
-                        val image = it.data as String
+                        val data = netWorkState.data as Resource<FileUploadResponse>
+                        blockUI(false)
+                        binding.vehicleInfoProgressBar.visibilityGone()
+                        carImagesPB.visibilityGone()
+                        val image = data.data?.data.toString()
                         imageUploaded(image)
                     }
                     NetworkState.Status.FAILED -> {
-                        withContext(Dispatchers.Main) {
-                        blockUI(false)
 
-                        showToast(it.msg.toString())
-                        Log.d("Mostafa", it.msg.toString())
+                        blockUI(false)
+                        showToast(netWorkState.msg.toString())
+                        Log.d("Mostafa", netWorkState.msg.toString())
                         binding.vehicleInfoProgressBar.visibilityGone()
                         carImagesPB.visibilityGone()
-                        }
+
                     }
                     NetworkState.Status.RUNNING ->{
-                        withContext(Dispatchers.Main) {
+
                         blockUI(true)
                         binding.vehicleInfoProgressBar.visibilityVisible()
                         carImagesPB.visibilityVisible()
 
-                    }
+
                     }
                     else -> {
                         Unit
@@ -591,14 +594,16 @@ class CreateAccountVehicalInfoFragment : Fragment() {
                 deleteImage5.disable()
                 deleteImage6.disable()
                 confirm.disable()
-//                binding.CarImage.disable()
-//                binding.deleteImage6Images.disable()
-//                binding.carFrontLicence.disable()
-//                binding.backCarLicenceLayout.disable()
-//                binding.deleteBackCarLicenceImage.disable()
-//                binding.deleteFrontCarLicenceImage.disable()
-//                binding.doneFrontCarLicenceImage.disable()
-//                binding.doneFrontCarLicenceImage.disable()
+
+
+                binding.CarImage.disable()
+                binding.deleteImage6Images.disable()
+                binding.carFrontLicence.disable()
+                binding.backCarLicenceLayout.disable()
+                binding.deleteBackCarLicenceImage.disable()
+                binding.deleteFrontCarLicenceImage.disable()
+                binding.doneFrontCarLicenceImage.disable()
+                binding.doneFrontCarLicenceImage.disable()
 
 
         }else{
@@ -622,25 +627,23 @@ class CreateAccountVehicalInfoFragment : Fragment() {
                 deleteImage5.enabled()
                 deleteImage6.enabled()
                 confirm.enabled()
-//                binding.CarImage.enabled()
-//                binding.deleteImage6Images.enabled()
-//                binding.carFrontLicence.enabled()
-//                binding.backCarLicenceLayout.enabled()
-//                binding.deleteBackCarLicenceImage.enabled()
-//                binding.deleteFrontCarLicenceImage.enabled()
-//                binding.doneFrontCarLicenceImage.enabled()
-//                binding.doneFrontCarLicenceImage.enabled()
+
+
+                binding.CarImage.enabled()
+                binding.deleteImage6Images.enabled()
+                binding.carFrontLicence.enabled()
+                binding.backCarLicenceLayout.enabled()
+                binding.deleteBackCarLicenceImage.enabled()
+                binding.deleteFrontCarLicenceImage.enabled()
+                binding.doneFrontCarLicenceImage.enabled()
+                binding.doneFrontCarLicenceImage.enabled()
+
             }
         }
     }
 
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        _binding=null
-//
-//
-//    }
+
 
 
 }

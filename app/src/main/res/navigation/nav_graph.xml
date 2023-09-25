@@ -3,22 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/SplashFragment">
+    app:startDestination="@id/IntroFragment">
 
-    <fragment
-        android:id="@+id/SplashFragment"
-        android:name="com.mostafahelal.atmodrive2.auth.presentation.view.SplashFragment"
-        android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
-        <action
-            android:id="@+id/action_SplashFragment_to_IntroFragment"
-            app:destination="@id/IntroFragment"
-            app:popUpTo="@id/nav_graph"
-            app:popUpToInclusive="true"/>
-        <action
-            android:id="@+id/action_SplashFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
     <fragment
         android:id="@+id/IntroFragment"
         android:name="com.mostafahelal.atmodrive2.auth.presentation.view.IntroFragment"
@@ -27,11 +13,6 @@
         <action
             android:id="@+id/action_IntroFragment_to_CreateAccountPersonalInfoFragment"
             app:destination="@id/CreateAccountPersonalInfoFragment" />
-        <action
-            android:id="@+id/action_IntroFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_IntroFragment_to_CreateAccountVehicalInfoFragment"
             app:destination="@id/CreateAccountVehicalInfoFragment" />
@@ -61,14 +42,5 @@
         android:id="@+id/CreateAccountBankInfoFragment"
         android:name="com.mostafahelal.atmodrive2.auth.presentation.view.CreateAccountBankInfoFragment"
         android:label="fragment_step5_create_account"
-        tools:layout="@layout/fragment_create_account_bank_info" >
-        <action
-            android:id="@+id/action_CreateAccountBankInfoFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.mostafahelal.atmodrive2.auth.presentation.view.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_create_account_bank_info" />
 </navigation>

@@ -1,20 +1,23 @@
 package com.mostafahelal.atmodrive2.auth.data.models
 
 import com.google.gson.annotations.SerializedName
+import com.mostafahelal.atmodrive2.auth.data.models.Options
+import com.mostafahelal.atmodrive2.auth.domain.model.OptionsLogin
+import com.mostafahelal.atmodrive2.auth.domain.model.UserLogin
 
 data class User(
     @SerializedName("avatar")
     val avatar: String?,
     @SerializedName("birthday")
-    val birthday: Any?,
+    val birthday: String?,
     @SerializedName("captain_code")
     val captainCode: String?,
     @SerializedName("email")
-    val email: Any?,
+    val email: String?,
     @SerializedName("full_name")
-    val fullName: Any?,
+    val fullName: String?,
     @SerializedName("gender")
-    val gender: Any?,
+    val gender: String?,
     @SerializedName("is_active")
     val isActive: Int?,
     @SerializedName("is_dark_mode")
@@ -22,9 +25,9 @@ data class User(
     @SerializedName("lang")
     val lang: String?,
     @SerializedName("mobile")
-    val mobile: String?,
+    val mobile: String,
     @SerializedName("nationality")
-    val nationality: Any?,
+    val nationality: String?,
     @SerializedName("options")
     val options: Options?,
     @SerializedName("register_step")
@@ -33,4 +36,22 @@ data class User(
     val rememberToken: String?,
     @SerializedName("status")
     val status: Int?
-)
+){
+    fun asDomain(): UserLogin = UserLogin(
+        avatar,
+        birthday,
+        captainCode,
+        email,
+        fullName,
+        gender,
+        isActive,
+        isDarkMode,
+        lang,
+        mobile,
+        nationality,
+        options?.asDomain(),
+        registerStep,
+        rememberToken,
+        status
+    )
+}

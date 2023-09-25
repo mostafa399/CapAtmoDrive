@@ -2,9 +2,6 @@
 <resources>
     <color name="purple500">#512DA8</color>
     <color name="purple700">#303F9F</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="primary">#00A6A6</color>
     <color name="teal700">#00796B</color>
     <color name="introbackcolor">#BE000000</color>
     <color name="quinary">#F1F4FA</color>
@@ -14,5 +11,22 @@
     <color name="colorText2">#FFFFFF</color>
     <color name="colorText3">#00A6A6</color>
     <color name="colorText4">#414B4B</color>
+
+
+    <color name="primary">#00A6A6</color>
+    <color name="secondary">#485668</color>
+    <color name="Tertiary">#D6E2ED</color>
+    <color name="Quinary">#F1F4FA</color>
+    <color name="Hint">#B2C3C9</color>
+    <color name="Background">#FFFFFF</color>
+    <color name="Border">#FFFFFF</color>
+    <color name="Title">#000000</color>
+    <color name="TitleSecondary">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="success">#3CD29C</color>
+    <color name="progress">#FFB21C</color>
+    <color name="error">#FF2D55</color>
+
 
 </resources>
