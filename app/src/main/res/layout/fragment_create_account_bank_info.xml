@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_create_account_bank_info"
     android:background="@color/Background"
     tools:context=".auth.presentation.view.CreateAccountPersonalInfoFragment">
 
@@ -80,41 +81,39 @@
      android:textColor="@color/Title"
      android:textColorHint="@color/Hint"
      android:id="@+id/Account_personal_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_15sdp"
-        android:ems="10"
-        android:hint="Account personal name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Bank_name" />
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:layout_margin="@dimen/_15sdp"
+     android:ems="10"
+     android:hint="Account personal name"
+     app:layout_constraintEnd_toEndOf="parent"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintTop_toBottomOf="@+id/Bank_name" />
 <EditText
     android:textColor="@color/Title"
     android:textColorHint="@color/Hint"
     android:id="@+id/Account_number"
-        android:inputType="number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_15sdp"
-        android:ems="10"
-        android:hint="Account number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Account_personal_name" />
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_15sdp"
+    android:ems="10"
+    android:hint="Account number"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/Account_personal_name" />
 
 <EditText
     android:textColor="@color/Title"
     android:textColorHint="@color/Hint"
     android:id="@+id/IBAN_number"
-        android:inputType="number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_15sdp"
-        android:ems="10"
-        android:hint="IBAN number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Account_number" />
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_15sdp"
+    android:ems="10"
+    android:hint="IBAN number"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/Account_number" />
 
     <Button
         android:id="@+id/submit_and_continue_bank"

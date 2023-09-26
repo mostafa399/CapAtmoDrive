@@ -12,16 +12,7 @@ import javax.inject.Inject
 
 class AuthRepository @Inject constructor(private val iRemoteAuth: IRemoteAuth):IAuthRepository {
     override suspend fun sendCode(mobile: String): Resource<LoginResponseModel> {
-       return try {
-            val response = iRemoteAuth.sendCode(mobile)
-            if (response.isSuccessful() && response.data?.status ==true) {
-                 Resource.Success(response.data)
-            } else {
-                 Resource.Error("Send code request failed")
-            }
-        } catch (e: Exception) {
-             Resource.Error(e.localizedMessage)
-        }
+       return  iRemoteAuth.sendCode(mobile)
     }
 
     override suspend fun checkCode(
@@ -29,16 +20,8 @@ class AuthRepository @Inject constructor(private val iRemoteAuth: IRemoteAuth):I
         verification_code: String,
         device_token: String
     ): Resource<LoginResponseModel> {
-       return try {
-            val response = iRemoteAuth.checkCode(mobile,verification_code,device_token)
-            if (response.isSuccessful() && response.data?.status == true) {
-                 Resource.Success(response.data)
-            } else {
-                 Resource.Error("Send code request failed")
-            }
-        } catch (e: Exception) {
-             Resource.Error(e.localizedMessage)
-        }
+       return iRemoteAuth.checkCode(mobile,verification_code,device_token)
+
     }
 
     override suspend fun registerPersonalInfo(

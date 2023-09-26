@@ -1,4 +1,5 @@
 package com.mostafahelal.atmodrive2.auth.presentation.view_model
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
@@ -59,11 +60,10 @@ class AuthViewModel @Inject constructor(
             _sendCodeResult.value = NetworkState.LOADING
             try {
                 val response =iAuthUseCase.sendCode(mobile)
-                if (response.isSuccessful()) {
+                if (response.data?.status!!) {
                     _sendCodeResult.value = NetworkState.getLoaded(response.data)
                 } else if (response.isFailed()){
                     _sendCodeResult.value = NetworkState.getErrorMessage("API request failed Send code request failed")
-                    _sendCodeResult.value=NetworkState.getLoaded(response.data)
                 }
             } catch (e: Exception) {
                 _sendCodeResult.value = NetworkState.getErrorMessage(e)
@@ -75,24 +75,17 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response=iAuthUseCase.checkCode(mobile,verification_code,device_token)
-                if (response.isSuccessful()){
-                    if (response.getData()?.data?.is_new==true){
-                        _navigateToRegister.value = NetworkState.getLoaded(response)
-                    }
-                    else if (response.getData()?.data?.is_new==false){
-                        _navigateToMain.value = NetworkState.getLoaded(response)
-                        saveLoginData(response)
-                        iSharedPreferencesManager.saveUserAccessToken("${response.getData()?.data?.user?.remember_token}")
-                    }
-                }else if (response.isFailed()){
-                    _navigateToMain.value = NetworkState.getErrorMessage("Check code request failed3")
-                    _navigateToRegister.value=NetworkState.getErrorMessage("Check code request failed3")
-
+                if (response.data?.status!!){
+                    _navigateToRegister.value = NetworkState.getLoaded(response)
+                    saveLoginData(response)
+                    iSharedPreferencesManager.saveUserAccessToken("${response.getData()?.data?.user?.remember_token}")
+                }
+                else {
+                    _navigateToRegister.value=NetworkState.getErrorMessage("Error Code !!")
                 }
 
             }catch (e:Exception){
                 _navigateToRegister.value = NetworkState.getErrorMessage(e)
-                _navigateToMain.value = NetworkState.getErrorMessage(e)
 
             }
         }
@@ -180,8 +173,6 @@ class AuthViewModel @Inject constructor(
                 if (response.isSuccessful()){
                     _bankAccount.value=NetworkState.getLoaded(response)
                     saveData(response)
-
-
                 }else{
                     _bankAccount.value=NetworkState.getErrorMessage(response.message.toString())
 

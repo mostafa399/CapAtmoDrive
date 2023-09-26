@@ -3,7 +3,6 @@ package com.mostafahelal.atmodrive2.auth.presentation.view
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +14,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,17 +24,16 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mostafahelal.atmodrive2.R
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
+import com.mostafahelal.atmodrive2.auth.data.utils.decodeFile
 import com.mostafahelal.atmodrive2.auth.data.utils.Constants
 import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
 import com.mostafahelal.atmodrive2.auth.data.utils.Resource
 import com.mostafahelal.atmodrive2.auth.data.utils.disable
 import com.mostafahelal.atmodrive2.auth.data.utils.enabled
-import com.mostafahelal.atmodrive2.auth.data.utils.getData
 import com.mostafahelal.atmodrive2.auth.data.utils.showToast
 import com.mostafahelal.atmodrive2.auth.data.utils.visibilityGone
 import com.mostafahelal.atmodrive2.auth.data.utils.visibilityVisible
 import com.mostafahelal.atmodrive2.auth.domain.model.FileUploadResponse
-import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.AuthViewModel
 import com.mostafahelal.atmodrive2.databinding.FragmentCreateAccountVehicalInfoBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +51,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CreateAccountVehicalInfoFragment : Fragment()  {
     private var _binding: FragmentCreateAccountVehicalInfoBinding?=null
+    @Inject
+    lateinit var sharedPreferences: ISharedPreferencesManager
     private val binding get() = _binding!!
     private val viewModel:AuthViewModel by viewModels()
     private var imageType: String = ""
@@ -102,7 +103,10 @@ class CreateAccountVehicalInfoFragment : Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding= FragmentCreateAccountVehicalInfoBinding.bind(view)
         setBottomSheetDialog()
+        setupToolbarNavigation()
+        setupBackPressedHandler()
 
         side1.setOnClickListener {
             setUpImagePicker()
@@ -304,8 +308,9 @@ class CreateAccountVehicalInfoFragment : Fragment()  {
             .start()
     }
     private fun uploadImage(image: Uri) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val a = BitmapFactory.decodeFile(image.path)
+       viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+
+            val a = decodeFile(image.path)
             val baos = ByteArrayOutputStream()
             a?.compress(Bitmap.CompressFormat.PNG, 100, baos)
             val imageBytes: ByteArray = baos.toByteArray()
@@ -318,73 +323,75 @@ class CreateAccountVehicalInfoFragment : Fragment()  {
             val name: RequestBody = Constants.VEHICLE_IMAGE_PATH
                 .toRequestBody("text/plain".toMediaTypeOrNull())
 
-            println("ADD_VEHICLE_UPLOAD_IMAGE  ${image.path}")
-            viewModel.uploadImage(body, name)
+            println("uploadImage  ${image.path}")
+
+            viewModel.uploadImage(part = body, path = name)
 
         }
-
     }
     private fun observeOnUploadFile() {
         lifecycleScope.launch{
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
             viewModel.mainEvent.collect {netWorkState->
-                when (netWorkState?.status) {
-                    NetworkState.Status.SUCCESS -> {
-                        val data = netWorkState.data as Resource<FileUploadResponse>
-                        blockUI(false)
-                        binding.vehicleInfoProgressBar.visibilityGone()
-                        carImagesPB.visibilityGone()
-                        val image = data.data?.data.toString()
-                        imageUploaded(image)
+                try {
+                    when (netWorkState?.status) {
+                        NetworkState.Status.SUCCESS -> {
+                            val data = netWorkState.data as Resource<FileUploadResponse>
+                            blockUI(false)
+                            binding.vehicleInfoProgressBar.visibilityGone()
+                            carImagesPB.visibilityGone()
+                            val image = data.data?.data.toString()
+                            imageUploaded(image)
+                        }
+                        NetworkState.Status.FAILED -> {
+
+                            blockUI(false)
+                            showToast(netWorkState.msg.toString())
+                            Log.d("Mostafa", netWorkState.msg.toString())
+                            binding.vehicleInfoProgressBar.visibilityGone()
+                            carImagesPB.visibilityGone()
+
+                        }
+                        NetworkState.Status.RUNNING ->{
+
+                            blockUI(true)
+                            binding.vehicleInfoProgressBar.visibilityVisible()
+                            carImagesPB.visibilityVisible()
+
+
+                        }
+                        else -> {
+                            Unit
+                        }
                     }
-                    NetworkState.Status.FAILED -> {
-
-                        blockUI(false)
-                        showToast(netWorkState.msg.toString())
-                        Log.d("Mostafa", netWorkState.msg.toString())
-                        binding.vehicleInfoProgressBar.visibilityGone()
-                        carImagesPB.visibilityGone()
-
-                    }
-                    NetworkState.Status.RUNNING ->{
-
-                        blockUI(true)
-                        binding.vehicleInfoProgressBar.visibilityVisible()
-                        carImagesPB.visibilityVisible()
-
-
-                    }
-                    else -> {
-                        Unit
-                    }
+                }catch (e:Exception){
+                    e.localizedMessage
                 }
+
             }
         }
         }
     }
     fun observeOnRegisterVehicalInfo(){
-        lifecycleScope.launch (Dispatchers.IO){
+        lifecycleScope.launch{
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
             viewModel.registerVehicalState.collect{
                 when(it?.status){
                     NetworkState.Status.SUCCESS->{
-                        withContext(Dispatchers.Main){
                         val action=CreateAccountVehicalInfoFragmentDirections.actionCreateAccountVehicalInfoFragmentToCreateAccountBankInfoFragment()
                         findNavController().navigate(action)
                         binding.vehicleInfoProgressBar.visibilityGone()
                     }
-                    }
                     NetworkState.Status.FAILED->{
-                        withContext(Dispatchers.Main){
+
                         showToast(it.msg.toString())
                         binding.vehicleInfoProgressBar.visibilityGone()
-                    }
+
                     }
                     NetworkState.Status.RUNNING ->{
-                        withContext(Dispatchers.Main){
                         binding.vehicleInfoProgressBar.visibilityVisible()
                     }
-                    }
+
                     else -> {
                         Unit
                     }
@@ -594,8 +601,6 @@ class CreateAccountVehicalInfoFragment : Fragment()  {
                 deleteImage5.disable()
                 deleteImage6.disable()
                 confirm.disable()
-
-
                 binding.CarImage.disable()
                 binding.deleteImage6Images.disable()
                 binding.carFrontLicence.disable()
@@ -627,8 +632,6 @@ class CreateAccountVehicalInfoFragment : Fragment()  {
                 deleteImage5.enabled()
                 deleteImage6.enabled()
                 confirm.enabled()
-
-
                 binding.CarImage.enabled()
                 binding.deleteImage6Images.enabled()
                 binding.carFrontLicence.enabled()
@@ -642,8 +645,23 @@ class CreateAccountVehicalInfoFragment : Fragment()  {
         }
     }
 
+    private fun setupBackPressedHandler() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+               requireActivity().finish()
+
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+    private fun setupToolbarNavigation() {
+        binding.topappbar.setNavigationOnClickListener {
+          requireActivity().finish()
 
 
+        }
+    }
 
 
 }

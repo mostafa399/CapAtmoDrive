@@ -3,9 +3,11 @@ package com.mostafahelal.atmodrive2.auth.presentation.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,18 +15,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.mostafahelal.atmodrive2.R
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
 import com.mostafahelal.atmodrive2.auth.data.utils.Constants
 import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
 import com.mostafahelal.atmodrive2.auth.data.utils.Resource
+import com.mostafahelal.atmodrive2.auth.data.utils.disable
+import com.mostafahelal.atmodrive2.auth.data.utils.enabled
 import com.mostafahelal.atmodrive2.auth.data.utils.getData
+import com.mostafahelal.atmodrive2.auth.data.utils.showToast
+import com.mostafahelal.atmodrive2.auth.data.utils.showToastShort
+import com.mostafahelal.atmodrive2.auth.data.utils.visibilityGone
+import com.mostafahelal.atmodrive2.auth.data.utils.visibilityVisible
 import com.mostafahelal.atmodrive2.auth.domain.model.LoginResponseModel
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.AuthViewModel
 import com.mostafahelal.atmodrive2.databinding.FragmentIntroBinding
@@ -33,31 +44,44 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import javax.inject.Inject
-
 @AndroidEntryPoint
 class IntroFragment : Fragment() {
     private lateinit var introBinding:FragmentIntroBinding
     private val viewModel:AuthViewModel by viewModels()
     private var backPressedCounter = 0
     private val doubleBackPressInterval = 2000
-    @Inject
-    lateinit var iSharedPreferencesManager:ISharedPreferencesManager
+    private var mTimer:Long = 120000
+    private var countdownTimer: CountDownTimer? = null
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
         introBinding=FragmentIntroBinding.inflate(layoutInflater)
         introBinding.ccp.setCountryForPhoneCode(20)
         return introBinding.root
+
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-                introBinding=FragmentIntroBinding.bind(view)
+        introBinding=FragmentIntroBinding.bind(view)
+
+        if (savedInstanceState != null) {
+            mTimer = savedInstanceState.getLong("time",120000)
+            if(mTimer != 120000.toLong()){
+                startCountdownTimer()
+                countdownTimer?.start()
+            }
+        }
+        introBinding.resendCode.setOnClickListener {
+            val mobile = introBinding.phoneEt.text.toString()
+            viewModel.sendMobilePhone("0$mobile")
+            mTimer = 120000
+            startCountdownTimer()
+        }
                 introBinding.loginBtn.isEnabled = false
                 setupBackPressedHandler()
                 introBinding.otpCode.addTextChangedListener(object :TextWatcher{
@@ -114,94 +138,107 @@ class IntroFragment : Fragment() {
     private fun setupVerifyButton() {
 
         introBinding.loginBtn.setOnClickListener {
+
             val otpCode = introBinding.otpCode.editableText.toString()
             val phoneNumber = introBinding.phoneEt.editableText.toString()
             val deviceToken = "device_token:0$phoneNumber"
+            if (otpCode.length==4){
             viewModel.checkCode("0$phoneNumber",otpCode,deviceToken)
             observeNavigateToRegister()
-            observeNavigateToMain()
-
-        }
-    }
-    private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(introBinding.otpCode.windowToken, 0)
-    }
-    private fun observeSendCodeResult(){
-        lifecycleScope.launch (Dispatchers.IO){
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.sendCodeResult.collect{networkState->
-                    when(networkState?.status){
-                        NetworkState.Status.SUCCESS->{
-                               withContext(Dispatchers.Main){
-                                   Toast.makeText(requireContext(), "Phone number posted to the server", Toast.LENGTH_SHORT).show()
-                                   introBinding.loginBtn.isEnabled = true
-
-                               }
-
-                        }
-                        NetworkState.Status.FAILED->{
-                            Log.d("IntroFragment", networkState.msg.toString())
-                        //    introBinding.loginBtn.isEnabled = true
-
-                        }
-                        else -> {
-                       //     introBinding.loginBtn.isEnabled = true
-
-                        }
-                    }
-
-                }
             }
+            else{
+                Toast.makeText(requireContext(), "Please write Code Correctly", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
-    private fun observeNavigateToRegister() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.navigateToRegister.collect { networkState ->
+    private fun observeSendCodeResult() {
+       viewLifecycleOwner.lifecycleScope.launch {
+           repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.sendCodeResult.collect { networkState ->
                     when (networkState?.status) {
                         NetworkState.Status.SUCCESS -> {
-                            val phone=introBinding.phoneEt.editableText.toString()
-                            val data=networkState.data as Resource<LoginResponseModel>
-                            withContext(Dispatchers.Main){
-//                                val action=IntroFragmentDirections.actionIntroFragmentToCreateAccountVehicalInfoFragment()
-                                val action=IntroFragmentDirections.actionIntroFragmentToCreateAccountPersonalInfoFragment("0$phone")
-                                findNavController().navigate(action)
+                            introBinding.loginBtn.isEnabled = true
+                            introBinding.loginprogressbar.visibilityGone()
+                            countdownTimer?.start()
+                        }
+
+                        NetworkState.Status.FAILED -> {
+                            introBinding.resendCode.apply {
+                                text = "Resend"
+                                disable()
                             }
-                        saveCaptainDate(data)
+                            countdownTimer?.cancel()
+                            introBinding.loginprogressbar.visibilityGone()
                         }
-                        NetworkState.Status.FAILED->{
-                            Log.d("VerifyFragment ", networkState.msg.toString())
 
+                        NetworkState.Status.RUNNING -> {
+                            introBinding.loginprogressbar.visibilityVisible()
                         }
-                        else -> Unit
+
+                        else -> {
+                        }
                     }
+
+
                 }
             }
+       }
         }
-    }
 
-    private fun observeNavigateToMain() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.navigateToMain.collect { networkState ->
-                    when (networkState?.status) {
-                        NetworkState.Status.SUCCESS -> {
-                            withContext(Dispatchers.Main){
-                                val intent=Intent(requireContext(),MapsActivity::class.java)
-                                startActivity(intent)
-                                activity?.finish()
-                            }}
-                        NetworkState.Status.FAILED->{
-                            Log.d("VerifyFragment", networkState.msg.toString())
+    private fun observeNavigateToRegister() {
+       viewLifecycleOwner.lifecycleScope.launch {
+           repeatOnLifecycle(Lifecycle.State.STARTED){
+           viewModel.navigateToRegister.collect { networkState ->
+                    try {
+                        when (networkState?.status) {
+                            NetworkState.Status.SUCCESS -> {
+                                countdownTimer?.cancel()
+                                val data = networkState.data as Resource<LoginResponseModel>
+                                val phone = introBinding.phoneEt.editableText.toString()
+                                if (data.getData()?.data?.is_new == true) {
+                                    val action = IntroFragmentDirections.actionIntroFragmentToCreateAccountPersonalInfoFragment("0$phone")
+                                    findNavController().navigate(action)
+                                } else {
+                                    if (data.getData()?.data?.user?.register_step==1){
+                                        val action=IntroFragmentDirections.actionIntroFragmentToCreateAccountVehicalInfoFragment()
+                                        findNavController().navigate(action)
+                                    }
+                                    else{
+                                        val intent = Intent(requireContext(), MapsActivity::class.java)
+                                        startActivity(intent)
+                                        activity?.finish()
+                                    }
 
+                                }
+                                introBinding.loginprogressbar.visibilityGone()
+
+                            }
+
+                            NetworkState.Status.FAILED -> {
+                             //   showToastShort("Error code ")
+                                introBinding.loginprogressbar.visibilityGone()
+
+                            }
+
+                            NetworkState.Status.RUNNING -> {
+                                introBinding.loginprogressbar.visibilityVisible()
+
+                            }
+
+                            else -> {}
                         }
-                        else -> Unit
+                    } catch (e: Exception) {
+
+                        e.localizedMessage
                     }
                 }
+
             }
+       }
         }
-    }
+
+
     private fun setupBackPressedHandler() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -223,29 +260,47 @@ class IntroFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
+    private fun startCountdownTimer(){
+        countdownTimer = object : CountDownTimer(mTimer, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                introBinding.resendCode.apply {
+                    val f: NumberFormat = DecimalFormat("00")
+                    val min = millisUntilFinished / 60000 % 60
+                    val sec = millisUntilFinished / 1000 % 60
+                    val mText =
+                        "<font color='#B2C3C9'>Resend(${(f.format(min)).toString() + ":" + f.format(sec)}s)</font>"
+                    setText(Html.fromHtml(mText), TextView.BufferType.SPANNABLE)
+                    disable()
+                    mTimer = millisUntilFinished
+                }
+            }
+
+            override fun onFinish() {
+                introBinding.resendCode.apply {
+                    val mText = "<font color='#00A6A6'><u>Resend</u></font>"
+                    setText(Html.fromHtml(mText), TextView.BufferType.SPANNABLE)
+                    enabled()
+                }
+                cancel()
+            }
+        }
+    }
+
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(introBinding.otpCode.windowToken, 0)
+    }
 
     override fun onResume() {
         super.onResume()
-        // Reset the backPressedCounter when the fragment resumes
         backPressedCounter = 0
     }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
 
-    fun saveCaptainDate(userData : Resource<LoginResponseModel>){
-        with(iSharedPreferencesManager) {
-            saveString(Constants.AVATAR_PREFS, userData.getData()?.data?.user?.avatar)
-            saveString(Constants.EMAIL_PREFS, userData.getData()?.data?.user?.email)
-            saveString(Constants.FULL_NAME_PREFS,userData.getData()?.data?.user?.full_name)
-            saveString(Constants.IS_DARK_MODE_PREFS,userData.getData()?.data?.user?.is_dark_mode.toString())
-            saveString(Constants.LANG_PREFS, userData.getData()?.data?.user?.lang)
-            saveString(Constants.MOBILE_PREFS, userData.getData()?.data?.user?.mobile)
-            saveString(Constants.CAPTAIN_CODE_PREFS, userData.getData()?.data?.user?.captain_code)
-            saveString(Constants.BIRTHDAY_PREFS,userData.getData()?.data?.user?.birthday)
-            saveString(Constants.REMEMBER_TOKEN_PREFS, userData.getData()?.data?.user?.remember_token)
-            saveString(Constants.GENDER_PREFS,userData.getData()?.data?.user?.gender)
-            saveString(Constants.STATUS_PREFS,userData.getData()?.data?.user?.status.toString())
-            saveString(Constants.IS_ACTIVE_PREFS,userData.getData()?.data?.user?.is_active.toString())
-            saveString(Constants.NATIONALITY_PREFS,userData.getData()?.data?.user?.nationality)
-            saveString(Constants.REGISTER_STEP_PREFS,userData.getData()?.data?.user?.register_step.toString())
-        }
+        outState.putLong("time", mTimer)
+
     }
+
 }

@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/CreateAccountPersonalInfoFragment"
         android:name="com.mostafahelal.atmodrive2.auth.presentation.view.CreateAccountPersonalInfoFragment"
-        android:label="fragment_step3_create_account"
+        android:label="fragment_create_account_personal_information"
         tools:layout="@layout/fragment_create_account_personal_info" >
         <action
             android:id="@+id/action_CreateAccountPersonalInfoFragment_to_CreateAccountVehicalInfoFragment"
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/CreateAccountVehicalInfoFragment"
         android:name="com.mostafahelal.atmodrive2.auth.presentation.view.CreateAccountVehicalInfoFragment"
-        android:label="fragment_step4_create_account"
+        android:label="fragment_create_account_vehical_info"
         tools:layout="@layout/fragment_create_account_vehical_info" >
         <action
             android:id="@+id/action_CreateAccountVehicalInfoFragment_to_CreateAccountBankInfoFragment"
@@ -41,6 +41,6 @@
     <fragment
         android:id="@+id/CreateAccountBankInfoFragment"
         android:name="com.mostafahelal.atmodrive2.auth.presentation.view.CreateAccountBankInfoFragment"
-        android:label="fragment_step5_create_account"
+        android:label="fragment_create_account_bank_info"
         tools:layout="@layout/fragment_create_account_bank_info" />
 </navigation>

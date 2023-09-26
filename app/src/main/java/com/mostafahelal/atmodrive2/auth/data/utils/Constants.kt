@@ -6,8 +6,6 @@ class Constants {
         const val BASE_CAPTAIN_URL="https://s1.drive.api.atmosphere.solutions/api/v1/captains/"
         const val BASE_Upload_image_URL="https://s1.drive.dashboard.atmosphere.solutions/"
         const val VEHICLE_IMAGE_PATH="captains"
-        const val CAPTAIN_PREFS="CAPTAIN_PREFS"
-
         const val AVATAR_PREFS = "avatar"
         const val BIRTHDAY_PREFS = "birthday"
         const val CAPTAIN_CODE_PREFS = "captain_code"

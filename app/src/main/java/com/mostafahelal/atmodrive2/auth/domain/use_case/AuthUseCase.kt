@@ -10,16 +10,7 @@ import javax.inject.Inject
 
 class AuthUseCase @Inject constructor(private val iAuthRepository: IAuthRepository):IAuthUseCase {
     override suspend fun sendCode(mobile: String): Resource<LoginResponseModel> {
-        return try {
-            val response = iAuthRepository.sendCode(mobile)
-            if (response.isSuccessful() && response.data?.status == true) {
-                Resource.Success(response.data)
-            } else {
-                Resource.Error("Send code request failed")
-            }
-        } catch (e: Exception) {
-            Resource.Error(e.localizedMessage)
-        }
+        return  iAuthRepository.sendCode(mobile)
     }
 
     override suspend fun checkCode(
@@ -27,16 +18,7 @@ class AuthUseCase @Inject constructor(private val iAuthRepository: IAuthReposito
         verification_code: String,
         device_token: String
     ): Resource<LoginResponseModel> {
-        return try {
-            val response = iAuthRepository.checkCode(mobile,verification_code,device_token)
-            if (response.isSuccessful() && response.data?.status == true) {
-                Resource.Success(response.data)
-            } else {
-                Resource.Error("check code request failed")
-            }
-        } catch (e: Exception) {
-            Resource.Error(e.localizedMessage)
-        }
+        return  iAuthRepository.checkCode(mobile,verification_code,device_token)
     }
 
     override suspend fun registerPersonalInfo(

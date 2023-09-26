@@ -3,7 +3,6 @@ package com.mostafahelal.atmodrive2.auth.presentation.view
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory.decodeFile
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,14 +23,13 @@ import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreference
 import com.mostafahelal.atmodrive2.auth.data.utils.Constants
 import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
 import com.mostafahelal.atmodrive2.auth.data.utils.Resource
+import com.mostafahelal.atmodrive2.auth.data.utils.decodeFile
 import com.mostafahelal.atmodrive2.auth.data.utils.disable
 import com.mostafahelal.atmodrive2.auth.data.utils.enabled
-import com.mostafahelal.atmodrive2.auth.data.utils.getData
 import com.mostafahelal.atmodrive2.auth.data.utils.showToast
 import com.mostafahelal.atmodrive2.auth.data.utils.visibilityGone
 import com.mostafahelal.atmodrive2.auth.data.utils.visibilityVisible
 import com.mostafahelal.atmodrive2.auth.domain.model.FileUploadResponse
-import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.AuthViewModel
 import com.mostafahelal.atmodrive2.databinding.FragmentCreateAccountPersonalInfoBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +46,8 @@ import javax.inject.Inject
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class CreateAccountPersonalInfoFragment : Fragment() {
-
+    @Inject
+    lateinit var sharedPreferences: ISharedPreferencesManager
     private var imageType = ""
     private var imageUploading = ""
     private var avatar = ""
@@ -75,7 +75,8 @@ class CreateAccountPersonalInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding= FragmentCreateAccountPersonalInfoBinding.bind(view)
-
+        setupBackPressedHandler()
+        setupToolbarNavigation()
         binding.personalCaptainImage.setOnClickListener {
             imageType  = "PersonalPhoto"
             setUpImagePicker()
@@ -206,8 +207,8 @@ class CreateAccountPersonalInfoFragment : Fragment() {
 
 
         private fun observeOnRegisterCaptain() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
          viewModel.registerState.collect{
                 when(it?.status){
                     NetworkState.Status.SUCCESS->{
@@ -238,33 +239,38 @@ class CreateAccountPersonalInfoFragment : Fragment() {
         }
     }
           private fun onUploadFile() {
-            lifecycleScope.launch{
-                    viewModel.mainEvent.collect {networkState->
-                    when (networkState?.status) {
-                        NetworkState.Status.SUCCESS -> {
-                            blockUI(false)
-                            binding.personalInfoProgressBar.visibilityGone()
-                            val data = networkState.data as Resource<FileUploadResponse>
-                            val image = data.data?.data.toString()
-                            imageUploaded(image)
-                        }
-                        NetworkState.Status.FAILED -> {
-                                blockUI(false)
-                                showToast(networkState.msg.toString())
-                                Log.d("Mostafa", networkState.msg.toString())
-                                binding.personalInfoProgressBar.visibilityGone()
-                        }
-                        NetworkState.Status.RUNNING ->{
-                            blockUI(true)
-                            binding.personalInfoProgressBar.visibilityVisible()
-                        }
-                        else -> {
-                            Unit
-                        }
-                    }
-                }
+           viewLifecycleOwner.lifecycleScope.launch {
+               repeatOnLifecycle(Lifecycle.State.STARTED) {
+                   viewModel.mainEvent.collect { networkState ->
+                       when (networkState?.status) {
+                           NetworkState.Status.SUCCESS -> {
+                               blockUI(false)
+                               binding.personalInfoProgressBar.visibilityGone()
+                               val data = networkState.data as Resource<FileUploadResponse>
+                               val image = data.data?.data.toString()
+                               imageUploaded(image)
+                           }
 
-            }
+                           NetworkState.Status.FAILED -> {
+                               blockUI(false)
+                               showToast(networkState.msg.toString())
+                               Log.d("Mostafa", networkState.msg.toString())
+                               binding.personalInfoProgressBar.visibilityGone()
+                           }
+
+                           NetworkState.Status.RUNNING -> {
+                               blockUI(true)
+                               binding.personalInfoProgressBar.visibilityVisible()
+                           }
+
+                           else -> {
+                               Unit
+                           }
+                       }
+                   }
+
+               }
+           }
 }
 
     private fun setUpImagePicker(){
@@ -274,7 +280,7 @@ class CreateAccountPersonalInfoFragment : Fragment() {
             .start()
     }
     private fun uploadImage(image: Uri) {
-        lifecycleScope.launch(Dispatchers.IO) {
+       viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
 
             val a = decodeFile(image.path)
             val baos = ByteArrayOutputStream()
@@ -295,7 +301,6 @@ class CreateAccountPersonalInfoFragment : Fragment() {
 
         }
     }
-
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -442,5 +447,25 @@ class CreateAccountPersonalInfoFragment : Fragment() {
         }
     }
 
+    private fun setupBackPressedHandler() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+                sharedPreferences.clearString(Constants.REMEMBER_TOKEN_PREFS)
+                sharedPreferences.clearString(Constants.REGISTER_STEP_PREFS)
+
+        }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+    private fun setupToolbarNavigation() {
+        binding.topappbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+            sharedPreferences.clearString(Constants.REMEMBER_TOKEN_PREFS)
+            sharedPreferences.clearString(Constants.REGISTER_STEP_PREFS)
+
+        }
+    }
 
 }

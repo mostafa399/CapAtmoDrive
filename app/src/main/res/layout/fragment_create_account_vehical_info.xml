@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_create_account_vehical_info"
     android:background="@color/Background"
     tools:context=".auth.presentation.view.CreateAccountVehicalInfoFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -164,7 +165,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/carFrontLicence"
-        android:layout_width="@dimen/_120sdp"
+        android:layout_width="@dimen/_130sdp"
         android:layout_height="@dimen/_90sdp"
         android:layout_margin="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
@@ -234,7 +235,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/back_car_licence_layout"
-        android:layout_width="@dimen/_120sdp"
+        android:layout_width="@dimen/_130sdp"
         android:layout_height="@dimen/_90sdp"
         android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/dotted_border"

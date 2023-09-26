@@ -19,7 +19,7 @@ class RemoteAuth @Inject constructor(
     override suspend fun sendCode(mobile: String): Resource<LoginResponseModel> {
         return try {
             val response=apiService.sendCode(mobile)
-            if (response.isSuccessful&&response.body()!=null&&response.body()?.status==true){
+            if (response.isSuccessful){
                 Resource.Success(response.body()!!.asDomain())
             }else{
                 Resource.Error("Send code request failed")
@@ -38,7 +38,7 @@ class RemoteAuth @Inject constructor(
     ): Resource<LoginResponseModel> {
         return try {
             val response=apiService.checkCode(mobile,verification_code,device_token)
-            if (response.isSuccessful&&response.body()?.status==true){
+            if (response.isSuccessful){
                 Resource.Success(response.body()!!.asDomain())
             }else{
                 Resource.Error("Check code request failed")
