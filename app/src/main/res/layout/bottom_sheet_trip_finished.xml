@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_trip_finished"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="0dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@color/Background"
+        android:backgroundTint="@color/Background"
+        app:cardCornerRadius="@dimen/_20sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_trip_finished"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/success"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="Trip finished 🎉🎉"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_12sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_trip_finished">
+
+                <TextView
+                    android:id="@+id/tv_TF_passenger_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Mostafa helal"
+                    android:textColor="@color/Title"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_TF_trip_price"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_TF_trip_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="105 EGP"
+                    android:textColor="@color/success"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_TF_payment_method"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cash"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_TF_trip_price" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar_TF_passenger"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:progressBackgroundTint="@color/progress"
+                    android:progressTint="@color/progress"
+                    android:rating="4"
+                    android:stepSize="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_TF_passenger_name" />
+
+                <TextView
+                    android:id="@+id/tv_TF_passenger_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(4.0)"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/_11sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ratingBar_TF_passenger"
+                    app:layout_constraintStart_toEndOf="@+id/ratingBar_TF_passenger"
+                    app:layout_constraintTop_toTopOf="@+id/ratingBar_TF_passenger" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_26sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ratingBar_TF_passenger">
+
+                    <EditText
+                        android:id="@+id/et_TF_paid_money"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Hint"
+                        android:hint="Paid money"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/Title"
+                        android:textColorHint="@color/Hint"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <TextView
+                        android:id="@+id/tv_TF_final_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/final_trip_price_background"
+                        android:padding="@dimen/_12sdp"
+                        android:text="105 EGP"
+                        android:textColor="@color/primary"
+                        android:textSize="@dimen/_14sdp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_TF_confirm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:background="@drawable/into_button_back"
+                    android:backgroundTint="@color/success"
+                    android:text="Confirm"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    app:layout_constraintWidth_percent="0.50" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

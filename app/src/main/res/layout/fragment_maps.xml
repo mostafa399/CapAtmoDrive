@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/Background"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".home.MapsFragment" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:visibility="gone"
+        android:id="@+id/fragment_bottom_sheet"
+        android:orientation="vertical"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/bottom_nav_gragh"
+        />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_16sdp"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="0dp"
+            android:id="@+id/mapgide1"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            map:layout_constraintGuide_percent=".05"/>
+
+        <ImageView
+            android:id="@+id/img_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/Background"
+            android:src="@drawable/nav"
+            map:layout_constraintBottom_toBottomOf="@id/mapgide1"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_atmodrive_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AtmoDrive"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16sdp"
+            android:textStyle="bold"
+            map:layout_constraintBottom_toBottomOf="@+id/mapgide1"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.551"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="@+id/img_category" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:id="@+id/check_button_Layout"
+            android:background="@drawable/back_checkbox_lay"
+            map:layout_constraintTop_toBottomOf="@id/mapgide1"
+            tools:layout_editor_absoluteX="21dp">
+
+            <TextView
+                android:textColor="@color/black"
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:text="You are offline"
+                map:layout_constraintBottom_toBottomOf="parent"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toTopOf="parent" />
+            <CheckBox
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                map:layout_constraintEnd_toEndOf="parent"
+                map:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
