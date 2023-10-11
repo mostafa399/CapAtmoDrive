@@ -3,10 +3,10 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
-import com.mostafahelal.atmodrive2.auth.data.utils.Constants
-import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
-import com.mostafahelal.atmodrive2.auth.data.utils.Resource
-import com.mostafahelal.atmodrive2.auth.data.utils.getData
+import com.mostafahelal.atmodrive2.utils.Constants
+import com.mostafahelal.atmodrive2.utils.NetworkState
+import com.mostafahelal.atmodrive2.utils.Resource
+import com.mostafahelal.atmodrive2.utils.getData
 import com.mostafahelal.atmodrive2.auth.domain.model.LoginResponseModel
 import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel
 import com.mostafahelal.atmodrive2.auth.domain.use_case.IAuthUseCase
@@ -39,7 +39,7 @@ class AuthViewModel @Inject constructor(
 
 
    fun uploadImage(part:MultipartBody.Part,path:RequestBody){
-       _mainEvent.value=NetworkState.LOADING
+       _mainEvent.value= NetworkState.LOADING
        viewModelScope.launch {
            try {
                val response =iAuthUseCase.uploadImage(part,path)
@@ -81,7 +81,7 @@ class AuthViewModel @Inject constructor(
                     iSharedPreferencesManager.saveUserAccessToken("${response.getData()?.data?.user?.remember_token}")
                 }
                 else {
-                    _navigateToRegister.value=NetworkState.getErrorMessage("Error Code !!")
+                    _navigateToRegister.value= NetworkState.getErrorMessage("Error Code !!")
                 }
 
             }catch (e:Exception){
@@ -139,23 +139,23 @@ class AuthViewModel @Inject constructor(
                                 vehicle_back_seat:String,
                                 vehicle_license_front:String,
                                 vehicle_license_back:String,){
-        _registerVehicalState.value=NetworkState.LOADING
+        _registerVehicalState.value= NetworkState.LOADING
         try {
             viewModelScope.launch {
                 val response=iAuthUseCase.registerVehicalInfo(vehicle_front,vehicle_back, vehicle_left, vehicle_right, vehicle_front_seat, vehicle_back_seat, vehicle_license_front, vehicle_license_back)
                if (response.isSuccessful()){
-                   _registerVehicalState.value=NetworkState.getLoaded(response)
+                   _registerVehicalState.value= NetworkState.getLoaded(response)
                    saveData(response)
 
                }else{
-                   _registerVehicalState.value=NetworkState.getErrorMessage(response.message.toString())
+                   _registerVehicalState.value= NetworkState.getErrorMessage(response.message.toString())
 
                }
 
             }
 
         }catch (e:Exception){
-            _registerVehicalState.value=NetworkState.getErrorMessage(e)
+            _registerVehicalState.value= NetworkState.getErrorMessage(e)
         }
 
 
@@ -166,22 +166,22 @@ class AuthViewModel @Inject constructor(
                             iban_number:String,
                             account_name:String,
                             account_number:String){
-        _bankAccount.value=NetworkState.LOADING
+        _bankAccount.value= NetworkState.LOADING
         try {
             viewModelScope.launch {
                 val response=iAuthUseCase.registerBankAccount(bank_name,iban_number, account_name, account_number)
                 if (response.isSuccessful()){
-                    _bankAccount.value=NetworkState.getLoaded(response)
+                    _bankAccount.value= NetworkState.getLoaded(response)
                     saveData(response)
                 }else{
-                    _bankAccount.value=NetworkState.getErrorMessage(response.message.toString())
+                    _bankAccount.value= NetworkState.getErrorMessage(response.message.toString())
 
                 }
 
             }
 
         }catch (e:Exception){
-            _bankAccount.value=NetworkState.getErrorMessage(e)
+            _bankAccount.value= NetworkState.getErrorMessage(e)
         }
 
     }
@@ -205,7 +205,7 @@ class AuthViewModel @Inject constructor(
             saveString(Constants.REGISTER_STEP_PREFS,userData.getData()?.data?.user?.register_step.toString())
         }
     }
-    fun saveData(response:Resource<RegisterResponseModel>){
+    fun saveData(response: Resource<RegisterResponseModel>){
         iSharedPreferencesManager.saveString(Constants.AVATAR_PREFS,response.data?.data?.avatar)
         iSharedPreferencesManager.saveString(Constants.EMAIL_PREFS, response.getData()?.data?.email)
         iSharedPreferencesManager.saveString(Constants.FULL_NAME_PREFS,response.getData()?.data?.full_name)

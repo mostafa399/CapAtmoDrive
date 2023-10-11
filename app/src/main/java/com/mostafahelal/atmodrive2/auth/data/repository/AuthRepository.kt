@@ -1,7 +1,7 @@
 package com.mostafahelal.atmodrive2.auth.data.repository
 
 import com.mostafahelal.atmodrive2.auth.data.data_source.remote.IRemoteAuth
-import com.mostafahelal.atmodrive2.auth.data.utils.Resource
+import com.mostafahelal.atmodrive2.utils.Resource
 import com.mostafahelal.atmodrive2.auth.domain.model.FileUploadResponse
 import com.mostafahelal.atmodrive2.auth.domain.model.LoginResponseModel
 import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel

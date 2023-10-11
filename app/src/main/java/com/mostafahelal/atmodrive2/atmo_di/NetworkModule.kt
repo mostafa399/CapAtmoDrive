@@ -3,7 +3,7 @@ package com.mostafahelal.atmodrive2.atmo_di
 import com.mostafahelal.atmodrive2.auth.data.data_source.ApiService
 import com.mostafahelal.atmodrive2.auth.data.data_source.GeneralService
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
-import com.mostafahelal.atmodrive2.auth.data.utils.Constants
+import com.mostafahelal.atmodrive2.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,7 +38,8 @@ object NetworkModule {
                     val url = originalUrl.newBuilder().build()
                     val requestBuilder = originalRequest.newBuilder().url(url)
                         .addHeader("Accept", "application/json")
-                        .addHeader("Authorization", "Bearer ${iSharedPreferencesManager.getString(Constants.REMEMBER_TOKEN_PREFS)}")
+                        .addHeader("Authorization", "Bearer ${iSharedPreferencesManager.getString(
+                            Constants.REMEMBER_TOKEN_PREFS)}")
                         .addHeader("Accept-Language","en")
                     val request = requestBuilder.build()
                     val response = chain.proceed(request)

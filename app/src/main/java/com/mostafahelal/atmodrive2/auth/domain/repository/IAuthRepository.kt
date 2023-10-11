@@ -1,5 +1,5 @@
 package com.mostafahelal.atmodrive2.auth.domain.repository
-import com.mostafahelal.atmodrive2.auth.data.utils.Resource
+import com.mostafahelal.atmodrive2.utils.Resource
 import com.mostafahelal.atmodrive2.auth.domain.model.FileUploadResponse
 import com.mostafahelal.atmodrive2.auth.domain.model.LoginResponseModel
 import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel

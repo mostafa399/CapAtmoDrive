@@ -2,8 +2,8 @@ package com.mostafahelal.atmodrive2.auth.data.data_source.remote
 
 import com.mostafahelal.atmodrive2.auth.data.data_source.ApiService
 import com.mostafahelal.atmodrive2.auth.data.data_source.GeneralService
-import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
-import com.mostafahelal.atmodrive2.auth.data.utils.Resource
+import com.mostafahelal.atmodrive2.utils.NetworkState
+import com.mostafahelal.atmodrive2.utils.Resource
 import com.mostafahelal.atmodrive2.auth.domain.model.FileUploadResponse
 import com.mostafahelal.atmodrive2.auth.domain.model.LoginResponseModel
 import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel

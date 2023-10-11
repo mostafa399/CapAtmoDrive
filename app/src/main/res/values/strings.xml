@@ -17,4 +17,9 @@
     <string name="submit_and_continue">Submit and Continue</string>
     <string name="submit_information">Submit information</string>
     <string name="confirm">Confirm</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="apiKey">AIzaSyAX70sHD4xeaJA25GLG9-FNTUt8vELac-o</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

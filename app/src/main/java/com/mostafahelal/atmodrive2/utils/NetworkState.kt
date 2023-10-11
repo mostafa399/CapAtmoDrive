@@ -1,4 +1,4 @@
-package com.mostafahelal.atmodrive2.auth.data.utils
+package com.mostafahelal.atmodrive2.utils
 
 import retrofit2.HttpException
 import java.io.IOException

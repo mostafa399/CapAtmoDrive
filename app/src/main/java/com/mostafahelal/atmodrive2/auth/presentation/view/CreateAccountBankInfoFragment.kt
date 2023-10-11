@@ -9,21 +9,18 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.mostafahelal.atmodrive2.R
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
-import com.mostafahelal.atmodrive2.auth.data.data_source.local.SharedPreferencesManager
-import com.mostafahelal.atmodrive2.auth.data.utils.Constants
-import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
-import com.mostafahelal.atmodrive2.auth.data.utils.Resource
-import com.mostafahelal.atmodrive2.auth.data.utils.showToast
-import com.mostafahelal.atmodrive2.auth.data.utils.visibilityGone
-import com.mostafahelal.atmodrive2.auth.data.utils.visibilityVisible
+import com.mostafahelal.atmodrive2.utils.Constants
+import com.mostafahelal.atmodrive2.utils.NetworkState
+import com.mostafahelal.atmodrive2.utils.Resource
+import com.mostafahelal.atmodrive2.utils.showToast
+import com.mostafahelal.atmodrive2.utils.visibilityGone
+import com.mostafahelal.atmodrive2.utils.visibilityVisible
 import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.AuthViewModel
 import com.mostafahelal.atmodrive2.databinding.FragmentCreateAccountBankInfoBinding
-import com.mostafahelal.atmodrive2.map.MapsActivity
+import com.mostafahelal.atmodrive2.home.MapsActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,7 +44,7 @@ class CreateAccountBankInfoFragment : Fragment() {
         setupToolbarNavigation()
         setupBackPressedHandler()
         binding.skip.setOnClickListener {
-            startActivity(Intent(requireContext(),MapsActivity::class.java))
+            startActivity(Intent(requireContext(), MapsActivity::class.java))
            activity?.finish()
 
         }
@@ -69,7 +66,7 @@ class CreateAccountBankInfoFragment : Fragment() {
             viewModel.bankAccount.collect{
                 when(it?.status){
                     NetworkState.Status.SUCCESS->{
-                        startActivity(Intent(requireContext(),MapsActivity::class.java))
+                        startActivity(Intent(requireContext(), MapsActivity::class.java))
                         activity?.finish()
                         val data=it.data as Resource<RegisterResponseModel>
                         shared.saveString(Constants.REGISTER_STEP_PREFS,data.data?.data?.register_step.toString())

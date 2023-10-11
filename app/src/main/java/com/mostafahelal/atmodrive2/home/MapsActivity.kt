@@ -1,12 +1,12 @@
-package com.mostafahelal.atmodrive2.map
+package com.mostafahelal.atmodrive2.home
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.mostafahelal.atmodrive2.MainActivity
+import com.mostafahelal.atmodrive2.auth.presentation.view.MainActivity
 import com.mostafahelal.atmodrive2.R
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
-import com.mostafahelal.atmodrive2.auth.data.utils.Constants
+import com.mostafahelal.atmodrive2.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 @AndroidEntryPoint
@@ -20,7 +20,7 @@ class MapsActivity : AppCompatActivity() {
     fun logOut(view: View) {
         preferencesManager.clearString(Constants.REMEMBER_TOKEN_PREFS)
         preferencesManager.clearString(Constants.REGISTER_STEP_PREFS)
-        startActivity(Intent(applicationContext,MainActivity::class.java))
+        startActivity(Intent(applicationContext, MainActivity::class.java))
         finish()
     }
 }

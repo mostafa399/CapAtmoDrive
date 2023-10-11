@@ -1,4 +1,4 @@
-package com.mostafahelal.atmodrive2.auth.data.utils
+package com.mostafahelal.atmodrive2.utils
 
 class Constants {
     companion object{
@@ -20,6 +20,9 @@ class Constants {
         const val REGISTER_STEP_PREFS = "register_step"
         const val REMEMBER_TOKEN_PREFS = "remember_token"
         const val STATUS_PREFS = "status"
+
+        const val ONLINE_CAPTAINS="Online_captains"
+
 
 
     }

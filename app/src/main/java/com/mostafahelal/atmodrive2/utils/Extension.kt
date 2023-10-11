@@ -1,4 +1,4 @@
-package com.mostafahelal.atmodrive2.auth.data.utils
+package com.mostafahelal.atmodrive2.utils
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap

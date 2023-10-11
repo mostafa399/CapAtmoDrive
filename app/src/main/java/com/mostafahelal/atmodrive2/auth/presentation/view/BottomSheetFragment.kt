@@ -1,11 +1,11 @@
-package com.mostafahelal.atmodrive2
+package com.mostafahelal.atmodrive2.auth.presentation.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mostafahelal.atmodrive2.R
 
 class BottomSheetFragment :BottomSheetDialogFragment() {
 

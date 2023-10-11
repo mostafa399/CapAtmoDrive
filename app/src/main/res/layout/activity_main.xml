@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/Base.Theme.AtmoDrive2"
-    tools:context=".MainActivity">
+    tools:context=".auth.presentation.view.MainActivity">
 
 
     <androidx.fragment.app.FragmentContainerView

@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_IntroFragment_to_CreateAccountVehicalInfoFragment"
             app:destination="@id/CreateAccountVehicalInfoFragment" />
+        <action
+            android:id="@+id/action_IntroFragment_to_CreateAccountVehicalInfoFragment2"
+            app:destination="@id/CreateAccountVehicalInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/CreateAccountPersonalInfoFragment"

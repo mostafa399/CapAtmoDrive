@@ -4,12 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import com.mostafahelal.atmodrive2.MainActivity
+import com.mostafahelal.atmodrive2.auth.presentation.view.MainActivity
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
-import com.mostafahelal.atmodrive2.auth.data.utils.Constants
+import com.mostafahelal.atmodrive2.utils.Constants
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.SplashViewModel
 import com.mostafahelal.atmodrive2.databinding.ActivitySplashBinding
-import com.mostafahelal.atmodrive2.map.MapsActivity
+import com.mostafahelal.atmodrive2.home.MapsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,12 +34,12 @@ class SplashActivity : AppCompatActivity() {
               if (token.isNullOrBlank()||(registerStep!="3" &&registerStep!="2"))
                 {
                     delay(3000L)
-                    startActivity(Intent(applicationContext,MainActivity::class.java))
+                    startActivity(Intent(applicationContext, MainActivity::class.java))
                     finish()
                 }
                 else
                 {
-                    startActivity(Intent(applicationContext,MapsActivity::class.java))
+                    startActivity(Intent(applicationContext, MapsActivity::class.java))
                     finish()
                 }
         }

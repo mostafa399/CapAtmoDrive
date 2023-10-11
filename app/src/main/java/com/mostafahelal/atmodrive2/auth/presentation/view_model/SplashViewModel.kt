@@ -2,7 +2,7 @@ package com.mostafahelal.atmodrive2.auth.presentation.view_model
 
 import androidx.lifecycle.ViewModel
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
-import com.mostafahelal.atmodrive2.auth.data.utils.Constants
+import com.mostafahelal.atmodrive2.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 @HiltViewModel

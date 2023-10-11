@@ -1,4 +1,4 @@
-package com.mostafahelal.atmodrive2.auth.data.utils
+package com.mostafahelal.atmodrive2.utils
 
 sealed class Resource<out T> (
     val data : T? = null,
@@ -14,14 +14,14 @@ sealed class Resource<out T> (
         return this is Error
     }
 }
-fun  <T>Resource<T>.getData():T?{
+fun  <T> Resource<T>.getData():T?{
 
     if (this is Resource.Success)
         return this.data
 
     return null
 }
-fun  <T>Resource<T>.getError():String?{
+fun  <T> Resource<T>.getError():String?{
 
     if (this is Resource.Error)
         return this.message

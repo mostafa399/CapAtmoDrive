@@ -9,7 +9,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,31 +21,23 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.mostafahelal.atmodrive2.R
-import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
-import com.mostafahelal.atmodrive2.auth.data.utils.Constants
-import com.mostafahelal.atmodrive2.auth.data.utils.NetworkState
-import com.mostafahelal.atmodrive2.auth.data.utils.Resource
-import com.mostafahelal.atmodrive2.auth.data.utils.disable
-import com.mostafahelal.atmodrive2.auth.data.utils.enabled
-import com.mostafahelal.atmodrive2.auth.data.utils.getData
-import com.mostafahelal.atmodrive2.auth.data.utils.showToast
-import com.mostafahelal.atmodrive2.auth.data.utils.showToastShort
-import com.mostafahelal.atmodrive2.auth.data.utils.visibilityGone
-import com.mostafahelal.atmodrive2.auth.data.utils.visibilityVisible
+import com.mostafahelal.atmodrive2.utils.NetworkState
+import com.mostafahelal.atmodrive2.utils.Resource
+import com.mostafahelal.atmodrive2.utils.disable
+import com.mostafahelal.atmodrive2.utils.enabled
+import com.mostafahelal.atmodrive2.utils.getData
+import com.mostafahelal.atmodrive2.utils.visibilityGone
+import com.mostafahelal.atmodrive2.utils.visibilityVisible
 import com.mostafahelal.atmodrive2.auth.domain.model.LoginResponseModel
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.AuthViewModel
 import com.mostafahelal.atmodrive2.databinding.FragmentIntroBinding
-import com.mostafahelal.atmodrive2.map.MapsActivity
+import com.mostafahelal.atmodrive2.home.MapsActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import javax.inject.Inject
+
 @AndroidEntryPoint
 class IntroFragment : Fragment() {
     private lateinit var introBinding:FragmentIntroBinding
@@ -197,6 +188,8 @@ class IntroFragment : Fragment() {
                                 val data = networkState.data as Resource<LoginResponseModel>
                                 val phone = introBinding.phoneEt.editableText.toString()
                                 if (data.getData()?.data?.is_new == true) {
+
+//                                    val action = IntroFragmentDirections.actionIntroFragmentToCreateAccountVehicalInfoFragment()
                                     val action = IntroFragmentDirections.actionIntroFragmentToCreateAccountPersonalInfoFragment("0$phone")
                                     findNavController().navigate(action)
                                 } else {
