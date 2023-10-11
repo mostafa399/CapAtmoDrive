@@ -92,9 +92,9 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
 //                Log.e("TAG", "onDataChange: $tripId", )
                 if (tripId!="0" && binding.checkBox.isChecked){
                     //show buttom Sheet
-                binding.fragmentBottomSheet.visibilityVisible()
+                binding.tripCycleCard.visibilityVisible()
 
-                }else  binding.fragmentBottomSheet.visibilityGone()
+                }else  binding.tripCycleCard.visibilityGone()
 
      /*  val captain = snapshot.getValue(CaptainModel::class.java)
 

@@ -18,19 +18,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".home.MapsFragment" />
-
-    <androidx.fragment.app.FragmentContainerView
+    <com.google.android.material.card.MaterialCardView
         android:visibility="gone"
-        android:id="@+id/fragment_bottom_sheet"
-        android:orientation="vertical"
-        app:behavior_hideable="false"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:id="@+id/trip_cycle_card"
+        app:strokeWidth="0dp"
+        app:strokeColor="@android:color/transparent"
+        map:cardElevation="0dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:navGraph="@navigation/bottom_nav_gragh"
-        />
+        android:background="@android:color/transparent"
+        android:backgroundTint="@android:color/transparent"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        >
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_bottom_sheet"
+            android:orientation="vertical"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="0dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:navGraph="@navigation/bottom_nav_gragh"
+            />
+
+    </com.google.android.material.card.MaterialCardView>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
