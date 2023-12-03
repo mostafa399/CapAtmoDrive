@@ -203,6 +203,7 @@ class AuthViewModel @Inject constructor(
             saveString(Constants.IS_ACTIVE_PREFS,userData.getData()?.data?.user?.is_active.toString())
             saveString(Constants.NATIONALITY_PREFS,userData.getData()?.data?.user?.nationality)
             saveString(Constants.REGISTER_STEP_PREFS,userData.getData()?.data?.user?.register_step.toString())
+            saveString(Constants.CAPTAIN_ID,userData.getData()?.data?.user?.id.toString())
         }
     }
     fun saveData(response: Resource<RegisterResponseModel>){
@@ -220,6 +221,7 @@ class AuthViewModel @Inject constructor(
         iSharedPreferencesManager.saveString(Constants.IS_ACTIVE_PREFS,response.getData()?.data?.is_active.toString())
         iSharedPreferencesManager.saveString(Constants.NATIONALITY_PREFS,response.getData()?.data?.nationality)
         iSharedPreferencesManager.saveString(Constants.REGISTER_STEP_PREFS,response.getData()?.data?.register_step.toString())
+        iSharedPreferencesManager.saveString(Constants.CAPTAIN_ID,response.getData()?.data?.id.toString())
 
     }
 

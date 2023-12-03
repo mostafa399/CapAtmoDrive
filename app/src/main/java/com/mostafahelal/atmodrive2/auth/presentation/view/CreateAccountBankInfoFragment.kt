@@ -19,7 +19,7 @@ import com.mostafahelal.atmodrive2.utils.visibilityVisible
 import com.mostafahelal.atmodrive2.auth.domain.model.RegisterResponseModel
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.AuthViewModel
 import com.mostafahelal.atmodrive2.databinding.FragmentCreateAccountBankInfoBinding
-import com.mostafahelal.atmodrive2.home.MapsActivity
+import com.mostafahelal.atmodrive2.home.presenter.view.MapsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject

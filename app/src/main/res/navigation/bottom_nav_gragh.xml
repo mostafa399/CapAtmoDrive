@@ -7,25 +7,7 @@
 
     <fragment
         android:id="@+id/bottomSheetNewTripFragment"
-        android:name="com.mostafahelal.atmodrive2.BottomSheetNewTripFragment"
+        android:name="com.mostafahelal.atmodrive2.home.presenter.view.BottomSheetNewTripFragment"
         android:label="fragment_bottom_sheet_new_trip"
-        tools:layout="@layout/fragment_bottom_sheet_new_trip" >
-        <action
-            android:id="@+id/action_bottomSheetNewTripFragment_to_botttomSheetAcceptedTripFragment"
-            app:destination="@id/botttomSheetAcceptedTripFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/botttomSheetAcceptedTripFragment"
-        android:name="com.mostafahelal.atmodrive2.BotttomSheetAcceptedTripFragment"
-        android:label="fragment_botttom_sheet_accepted_trip"
-        tools:layout="@layout/fragment_botttom_sheet_accepted_trip" >
-        <action
-            android:id="@+id/action_botttomSheetAcceptedTripFragment_to_bottomSheetFinshedTripFragment"
-            app:destination="@id/bottomSheetFinshedTripFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/bottomSheetFinshedTripFragment"
-        android:name="com.mostafahelal.atmodrive2.BottomSheetFinshedTripFragment"
-        android:label="fragment_bottom_sheet_finshed_trip"
-        tools:layout="@layout/fragment_bottom_sheet_finshed_trip" />
+        tools:layout="@layout/fragment_bottom_sheet_new_trip" />
 </navigation>

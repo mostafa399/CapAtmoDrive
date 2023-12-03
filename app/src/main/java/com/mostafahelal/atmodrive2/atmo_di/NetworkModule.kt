@@ -3,6 +3,7 @@ package com.mostafahelal.atmodrive2.atmo_di
 import com.mostafahelal.atmodrive2.auth.data.data_source.ApiService
 import com.mostafahelal.atmodrive2.auth.data.data_source.GeneralService
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
+import com.mostafahelal.atmodrive2.home.data.data_source.TripApi
 import com.mostafahelal.atmodrive2.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -55,6 +56,9 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideApiService(@Named("apiCaptain") retrofit: Retrofit): ApiService =retrofit.create(ApiService::class.java)
+    @Provides
+    @Singleton
+    fun provideTripApi(@Named("apiCaptain") retrofit: Retrofit): TripApi =retrofit.create(TripApi::class.java)
 
 
     @Provides

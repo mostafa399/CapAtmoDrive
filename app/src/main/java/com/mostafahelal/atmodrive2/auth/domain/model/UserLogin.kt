@@ -2,6 +2,7 @@ package com.mostafahelal.atmodrive2.auth.domain.model
 
 data class UserLogin(
     val avatar: String?,
+    val id: Int?,
     val birthday: String?,
     val captain_code: String?,
     val email: String?,

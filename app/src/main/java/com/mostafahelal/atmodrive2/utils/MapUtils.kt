@@ -1,4 +1,4 @@
-package com.mostafahelal.atmodrive2.home
+package com.mostafahelal.atmodrive2.utils
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,7 +9,15 @@ import kotlin.math.abs
 import kotlin.math.atan
 
 object MapUtils {
+    fun getPickupBitmap(context: Context): Bitmap {
+        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.pickup_location_icon)
+        return Bitmap.createScaledBitmap(bitmap, 130, 130, true)
+    }
 
+    fun getDropOffBitmap(context: Context): Bitmap {
+        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.dropoff_location_icon)
+        return Bitmap.createScaledBitmap(bitmap, 130, 130, true)
+    }
     fun getCarBitmap(context: Context): Bitmap {
         val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_car)
 

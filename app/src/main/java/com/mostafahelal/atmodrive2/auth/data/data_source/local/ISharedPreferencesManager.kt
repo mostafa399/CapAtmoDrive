@@ -11,6 +11,8 @@ interface ISharedPreferencesManager {
     fun saveUserAccessToken(token: String)
     fun deleteAccessToken(): Boolean
     fun saveString(key: String, value: String?)
+    fun saveBoolean(key: String, value: Boolean)
     fun getString(key: String, defaultValue: String = ""): String
+    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
     fun clearString(key: String)
 }

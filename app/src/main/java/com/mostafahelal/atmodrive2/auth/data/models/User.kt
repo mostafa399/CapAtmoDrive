@@ -35,10 +35,13 @@ data class User(
     @SerializedName("remember_token")
     val rememberToken: String?,
     @SerializedName("status")
-    val status: Int?
+    val status: Int? ,
+    @SerializedName("id")
+    val id: Int?
 ){
     fun asDomain(): UserLogin = UserLogin(
         avatar,
+        id,
         birthday,
         captainCode,
         email,

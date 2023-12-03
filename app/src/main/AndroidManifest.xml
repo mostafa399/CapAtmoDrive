@@ -30,7 +30,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/apiKey" />
         <activity
-            android:name=".home.MapsActivity"
+            android:name=".home.presenter.view.MapsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

@@ -9,7 +9,7 @@ import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreference
 import com.mostafahelal.atmodrive2.utils.Constants
 import com.mostafahelal.atmodrive2.auth.presentation.view_model.SplashViewModel
 import com.mostafahelal.atmodrive2.databinding.ActivitySplashBinding
-import com.mostafahelal.atmodrive2.home.MapsActivity
+import com.mostafahelal.atmodrive2.home.presenter.view.MapsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

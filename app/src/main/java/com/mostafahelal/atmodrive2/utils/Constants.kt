@@ -1,8 +1,11 @@
 package com.mostafahelal.atmodrive2.utils
 
+import com.google.android.gms.maps.model.LatLng
+
 class Constants {
     companion object{
 
+        const val TRIP_COST = "trip_cost"
         const val BASE_CAPTAIN_URL="https://s1.drive.api.atmosphere.solutions/api/v1/captains/"
         const val BASE_Upload_image_URL="https://s1.drive.dashboard.atmosphere.solutions/"
         const val VEHICLE_IMAGE_PATH="captains"
@@ -20,8 +23,14 @@ class Constants {
         const val REGISTER_STEP_PREFS = "register_step"
         const val REMEMBER_TOKEN_PREFS = "remember_token"
         const val STATUS_PREFS = "status"
-
-        const val ONLINE_CAPTAINS="Online_captains"
+        const val CAPTAIN_ID = "captainId"
+        const val ONLINE_CAPTAINS="OnlineCaptains"
+        const val TRIPS="trips"
+        var isBottomSheetOn=false
+        const val CAPTAIN_STATUS = "captain_status"
+        var captainLatLng: LatLng? = null
+        var pickUpLatLng: LatLng? = null
+        var dropOffLatLng: LatLng? = null
 
 
 
