@@ -41,8 +41,8 @@ interface TripApi {
     @FormUrlEncoded
     suspend fun endTrip(
         @Field("trip_id") trip_id: Int,
-        @Field("captain_lat") captain_lat: String,
-        @Field("captain_lng") captain_lng: String,
+        @Field("dropoff_lat") dropoff_lat: Double,
+        @Field("dropoff_lng") dropoff_lng: Double,
         @Field("captain_location_name") captain_location_name: String,
         @Field("distance") distance: Double
     ):TripStatusResponse
@@ -51,13 +51,21 @@ interface TripApi {
     suspend fun getPassengerDetailsForTrip(
         @Field("trip_id") trip_id: Int
     ): PassengerDetailsResponse
+    @POST("payment-cash")
+    @FormUrlEncoded
+    suspend fun confirmCash(
+        @Field("trip_id") tripId: Int,
+        @Field("amount") amount: Double
+    ):TripStatusResponse
     @POST("update-availability")
     @FormUrlEncoded
     suspend fun updateAvailability(
         @Field("captain_lat") captain_lat: String,
         @Field("captain_lng") captain_lng: String
     ): UpdateAvailabilityResponse
+
     @GET("captain-on-trip")
     suspend fun onTrip():PassengerDetailsResponse
+
 
 }

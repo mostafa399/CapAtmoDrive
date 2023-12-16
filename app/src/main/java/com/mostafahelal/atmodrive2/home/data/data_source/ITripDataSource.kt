@@ -1,9 +1,11 @@
 package com.mostafahelal.atmodrive2.home.data.data_source
 
+import com.mostafahelal.atmodrive2.home.data.model.TripStatusResponse
 import com.mostafahelal.atmodrive2.home.domain.model.PassengerDetails
 import com.mostafahelal.atmodrive2.home.domain.model.TripStatus
 import com.mostafahelal.atmodrive2.home.domain.model.UpdateAvailability
 import com.mostafahelal.atmodrive2.utils.Resource
+import retrofit2.http.Field
 
 interface ITripDataSource {
     suspend fun acceptTrip(
@@ -28,8 +30,8 @@ interface ITripDataSource {
     ):Resource<TripStatus>
     suspend fun endTrip(
         trip_id: Int,
-        captain_lat: String,
-        captain_lng: String,
+        captain_lat: Double,
+        captain_lng: Double,
         captain_location_name: String,
         distance: Double
     ):Resource<TripStatus>
@@ -41,5 +43,8 @@ interface ITripDataSource {
         captain_lng: String
     ): Resource<UpdateAvailability>
     suspend fun onTrip():Resource<PassengerDetails>
-
+    suspend fun confirmCash(
+        tripId: Int,
+        amount: Double
+    ): Resource<TripStatus>
 }

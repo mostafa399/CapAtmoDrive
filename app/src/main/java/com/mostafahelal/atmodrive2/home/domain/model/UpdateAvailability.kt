@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class UpdateAvailability(
 
-    val available: Boolean? = null,
+    val available: Boolean,
     val message: String,
     val status: Boolean
 )

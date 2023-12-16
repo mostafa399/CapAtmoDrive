@@ -25,6 +25,8 @@ class Constants {
         const val STATUS_PREFS = "status"
         const val CAPTAIN_ID = "captainId"
         const val ONLINE_CAPTAINS="OnlineCaptains"
+        const val DROPOFFLAT="DROPOFFLAT"
+        const val DROPOFFLNG="DROPOFFLNG"
         const val TRIPS="trips"
         var isBottomSheetOn=false
         const val CAPTAIN_STATUS = "captain_status"

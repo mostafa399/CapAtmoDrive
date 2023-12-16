@@ -6,7 +6,7 @@ import com.mostafahelal.atmodrive2.home.domain.model.UpdateAvailability
 
 data class UpdateAvailabilityResponse(
     @SerializedName("available")
-    val available: Boolean? = null,
+    val available: Boolean,
     @SerializedName("message")
     val message: String,
     @SerializedName("status")

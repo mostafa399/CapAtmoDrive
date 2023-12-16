@@ -20,8 +20,7 @@ object MapUtils {
     }
     fun getCarBitmap(context: Context): Bitmap {
         val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_car)
-
-        return Bitmap.createScaledBitmap(bitmap, 77, 150, true)
+        return Bitmap.createScaledBitmap(bitmap, 55, 110, true)
     }
     fun getRotation(start: LatLng, end: LatLng): Float {
         val latDifference: Double = abs(start.latitude - end.latitude)

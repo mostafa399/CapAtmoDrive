@@ -93,6 +93,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:background="@color/Background"
                     app:ccp_contentColor="@color/Title"
                     app:ccp_showArrow="true"
                     app:ccp_showFlag="true"

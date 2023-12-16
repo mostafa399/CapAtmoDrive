@@ -8,7 +8,8 @@ data class TripStatusResponse(
     @SerializedName("message")
     val message: String,
     @SerializedName("status")
-    val status: Boolean
+    val status: Boolean,
+    val data:EndTripData?
 ){
-    fun asDomain():TripStatus= TripStatus(message, status)
+    fun asDomain():TripStatus= TripStatus(message, status,data?.asDomain())
 }

@@ -35,8 +35,8 @@ class TripUseCase @Inject constructor(private val iTripRepository: ITripReposito
 
     override suspend fun endTrip(
         trip_id: Int,
-        captain_lat: String,
-        captain_lng: String,
+        captain_lat: Double,
+        captain_lng: Double,
         captain_location_name: String,
         distance: Double
     ): Resource<TripStatus> {
@@ -57,5 +57,9 @@ class TripUseCase @Inject constructor(private val iTripRepository: ITripReposito
 
     override suspend fun onTrip(): Resource<PassengerDetails> {
         return iTripRepository.onTrip()
+    }
+
+    override suspend fun confirmCash(tripId: Int, amount: Double): Resource<TripStatus> {
+        return iTripRepository.confirmCash(tripId, amount)
     }
 }

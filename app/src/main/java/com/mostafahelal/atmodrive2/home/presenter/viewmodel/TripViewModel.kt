@@ -2,7 +2,9 @@ package com.mostafahelal.atmodrive2.home.presenter.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
 import com.mostafahelal.atmodrive2.home.domain.use_case.ITripUseCase
+import com.mostafahelal.atmodrive2.utils.Constants
 import com.mostafahelal.atmodrive2.utils.NetworkState
 import com.mostafahelal.atmodrive2.utils.getError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,10 +13,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
-class TripViewModel @Inject constructor(private val iTripUseCase: ITripUseCase)
+class TripViewModel @Inject constructor(private val iTripUseCase: ITripUseCase
+,private val preferencesManager: ISharedPreferencesManager)
     :ViewModel(){
-    private val _updateAvaResult: MutableStateFlow<NetworkState?> = MutableStateFlow(null)
-    val updateAvaResult: StateFlow<NetworkState?> =_updateAvaResult
+    private val _updateAvalibality: MutableStateFlow<NetworkState?> = MutableStateFlow(null)
+    val updateAvalibality: StateFlow<NetworkState?> =_updateAvalibality
 
     private val _passengerDetails: MutableStateFlow<NetworkState?> = MutableStateFlow(null)
     val passengerDetails: StateFlow<NetworkState?> =_passengerDetails
@@ -37,22 +40,25 @@ class TripViewModel @Inject constructor(private val iTripUseCase: ITripUseCase)
     private val _endTrip: MutableStateFlow<NetworkState?> = MutableStateFlow(null)
     val endTrip: StateFlow<NetworkState?> =_endTrip
 
-    private val _onTripResult: MutableStateFlow<NetworkState?> = MutableStateFlow(null)
-    val onTripResult: StateFlow<NetworkState?> =_onTripResult
+    private val _onTrip: MutableStateFlow<NetworkState?> = MutableStateFlow(null)
+    val onTrip: StateFlow<NetworkState?> =_onTrip
+
+    private val _confirmCash: MutableStateFlow<NetworkState?> = MutableStateFlow(null)
+    val confirmCash: StateFlow<NetworkState?> =_confirmCash
 
     fun updateAvailability(captainLat: String,captainLng:String) {
-        _updateAvaResult.value = NetworkState.LOADING
+        _updateAvalibality.value = NetworkState.LOADING
         viewModelScope.launch {
             try {
                 val result = iTripUseCase.updateAvailability(captainLat, captainLng)
-                if (result.isSuccessful()){
-                    _updateAvaResult.value = NetworkState.getLoaded(result)
+                if (result.data?.status!!){
+                    _updateAvalibality.value = NetworkState.getLoaded(result)
                 }else{
-                    _updateAvaResult.value = NetworkState.getErrorMessage(result.message.toString())
+                    _updateAvalibality.value = NetworkState.getErrorMessage(result.message.toString())
                 }
             }catch (ex:Exception){
                 ex.printStackTrace()
-                _updateAvaResult.value = NetworkState.getErrorMessage(ex)
+                _updateAvalibality.value = NetworkState.getErrorMessage(ex)
             }
         }
     }
@@ -64,6 +70,8 @@ class TripViewModel @Inject constructor(private val iTripUseCase: ITripUseCase)
                 val result = iTripUseCase.getPassengerDetailsForTrip(tripId)
                 if (result.isSuccessful()){
                     _passengerDetails.value = NetworkState.getLoaded(result)
+                    preferencesManager.saveString(Constants.DROPOFFLAT,result.data?.data?.dropoffLat)
+                    preferencesManager.saveString(Constants.DROPOFFLNG,result.data?.data?.dropoffLng)
                 }else{
                     _passengerDetails.value = NetworkState.getErrorMessage(result.message.toString())
                 }
@@ -161,8 +169,8 @@ class TripViewModel @Inject constructor(private val iTripUseCase: ITripUseCase)
 
     fun endTrip(
         tripId: Int,
-        dropOffLat: String,
-        dropOffLng: String,
+        dropOffLat: Double,
+        dropOffLng: Double,
         dropOffLocName: String,
         distance: Double
     ) {
@@ -182,19 +190,38 @@ class TripViewModel @Inject constructor(private val iTripUseCase: ITripUseCase)
         }
     }
     fun onTrip() {
-        _onTripResult.value = NetworkState.LOADING
+        _onTrip.value = NetworkState.LOADING
         viewModelScope.launch {
             try {
                 val result = iTripUseCase.onTrip()
                 if (result.isSuccessful()){
-                    _onTripResult.value = NetworkState.getLoaded(result)
+                    _onTrip.value = NetworkState.getLoaded(result)
                 }else{
-                    _onTripResult.value = NetworkState.getErrorMessage(result.getError().toString())
+                    _onTrip.value = NetworkState.getErrorMessage(result.getError().toString())
                 }
             }catch (ex:Exception){
                 ex.printStackTrace()
-                _onTripResult.value = NetworkState.getErrorMessage(ex)
+                _onTrip.value = NetworkState.getErrorMessage(ex)
             }
         }
     }
+    fun confirmCash(
+        tripId: Int,
+        amount: Double    ) {
+        _confirmCash.value = NetworkState.LOADING
+        viewModelScope.launch {
+            try {
+                val result = iTripUseCase.confirmCash(tripId,amount)
+                if (result.isSuccessful()){
+                    _confirmCash.value = NetworkState.getLoaded(result)
+                }else{
+                    _confirmCash.value = NetworkState.getErrorMessage(result.getError().toString())
+                }
+            }catch (ex:Exception){
+                ex.printStackTrace()
+                _confirmCash.value = NetworkState.getErrorMessage(ex)
+            }
+        }
+    }
+
 }

@@ -28,8 +28,8 @@ interface ITripUseCase {
     ): Resource<TripStatus>
     suspend fun endTrip(
         trip_id: Int,
-        captain_lat: String,
-        captain_lng: String,
+        captain_lat: Double,
+        captain_lng: Double,
         captain_location_name: String,
         distance: Double
     ): Resource<TripStatus>
@@ -41,5 +41,9 @@ interface ITripUseCase {
         captain_lng: String
     ): Resource<UpdateAvailability>
     suspend fun onTrip():Resource<PassengerDetails>
+    suspend fun confirmCash(
+        tripId: Int,
+        amount: Double
+    ): Resource<TripStatus>
 
 }

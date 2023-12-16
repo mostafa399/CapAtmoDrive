@@ -47,13 +47,13 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
     @Inject
     lateinit var preferencesManager: ISharedPreferencesManager
     private lateinit var binding: FragmentBotttomSheetAcceptedTripBinding
-    val model: SharedViewModel by activityViewModels()
+    val sharedViewModel: SharedViewModel by activityViewModels()
     private val tripViewModel : TripViewModel by viewModels()
 
     private var valueEventListener : ValueEventListener?= null
     private lateinit var database: DatabaseReference
     var tripId = 0
-    var tripStats:String? = ""
+    var tripStatus:String? = ""
     var dropOffLatLng: LatLng? = null
     var dropOffLocName:String = ""
     var passengerMobile = ""
@@ -68,16 +68,20 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding= FragmentBotttomSheetAcceptedTripBinding.bind(view)
-        database = Firebase.database.reference
+        init()
         onClick()
         listenerOnTripId()
         observer()
 
     }
 
+    private fun init() {
+        database = Firebase.database.reference
+    }
+
     private fun onClick() {
-        binding.btnTripLifecycle.setOnClickListener {
-            when (tripStats) {
+        binding.btnTrip.setOnClickListener {
+            when (tripStatus) {
                 "accepted" -> {
                     tripViewModel.pickUpTrip(tripId)
                 }
@@ -90,15 +94,15 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
                 "start_trip" -> {
                     tripViewModel.endTrip(
                         tripId,
-                        Constants.captainLatLng?.latitude.toString(),
-                        Constants.captainLatLng?.longitude.toString(),
-                        model.getAddressFromLatLng(requireContext(),Constants.captainLatLng!!),
+                        Constants.captainLatLng?.latitude!! ,
+                        Constants.captainLatLng?.longitude!!,
+                        sharedViewModel.getAddressFromLatLng(requireContext(),Constants.captainLatLng!!),
                         1500.0
-                    )
-                }
+                    )    }
                 "pay" -> {
 
                 }
+
             }
         }
         binding.imgCallPassenger.setOnClickListener {
@@ -107,12 +111,8 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
             startActivity(callIntent)
         }
     }
-
-
-
-
     private fun listenerOnTripId() {
-        model.tripId.observe(requireActivity(), Observer {
+        sharedViewModel.tripId.observe(requireActivity(), Observer {
 
             if (it > 0){
                 tripId = it
@@ -128,34 +128,34 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
 
                 val stats = snapshot.getValue(String::class.java)
 
-                tripStats = stats
+                tripStatus = stats
 
-                when (tripStats) {
+                when (tripStatus) {
                     null -> {
-                        model.setRequestStatus(false)
+                        sharedViewModel.setRequestStatus(false)
                     }
                     "accepted" -> {
                         tripViewModel.getPassengerDetails(tripId)
                         binding.tvTripLifecycle.text = "trip accepted"
-                        binding.btnTripLifecycle.text = "On The Way"
+                        binding.btnTrip.text = "On The Way"
                         binding.imgCallPassenger.enabled()
                     }
                     "on_the_way" -> {
                         tripViewModel.getPassengerDetails(tripId)
                         binding.tvTripLifecycle.text = "Going to pickup"
-                        binding.btnTripLifecycle.text = "Arrived"
+                        binding.btnTrip.text = "Arrived"
                         binding.imgCallPassenger.enabled()
                     }
                     "arrived" -> {
                         tripViewModel.getPassengerDetails(tripId)
                         binding.tvTripLifecycle.text = "Waiting for passenger"
-                        binding.btnTripLifecycle.text = "Start trip"
+                        binding.btnTrip.text = "Start trip"
                         binding.imgCallPassenger.enabled()
                     }
                     "start_trip" -> {
                         tripViewModel.getPassengerDetails(tripId)
                         binding.tvTripLifecycle.text = "Trip running"
-                        binding.btnTripLifecycle.text = "Finish trip"
+                        binding.btnTrip.text = "Finish trip"
                         binding.imgCallPassenger.disable()
                     }
                     "pay" -> {
@@ -206,8 +206,7 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
                     when (networkState?.status) {
                         NetworkState.Status.SUCCESS -> {
                             binding.tripCycleProgressBar.visibilityGone()
-                            val data = networkState.data as Resource<TripStatus>
-//                        showToast(data.getData()?.message!!)
+
                         }
 
                         NetworkState.Status.FAILED -> {
@@ -231,8 +230,6 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
                     when (networkState?.status) {
                         NetworkState.Status.SUCCESS -> {
                             binding.tripCycleProgressBar.visibilityGone()
-                            val data = networkState.data as Resource<TripStatus>
-//                        showToast(data.getData()?.message!!)
                         }
 
                         NetworkState.Status.FAILED -> {
@@ -255,8 +252,7 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
                     when (networkState?.status) {
                         NetworkState.Status.SUCCESS -> {
                             binding.tripCycleProgressBar.visibilityGone()
-                            val data = networkState.data as Resource<TripStatus>
-//                        showToast(data.getData()?.message!!)
+
                         }
 
                         NetworkState.Status.FAILED -> {
@@ -278,20 +274,11 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
                 tripViewModel.endTrip.collect { networkState ->
                     when (networkState?.status) {
                         NetworkState.Status.SUCCESS -> {
-                            binding.tripCycleProgressBar.visibilityGone()
                             val data = networkState.data as Resource<TripStatus>
-//                        showToast(data.getData()?.message!!)
-//
-
-                        //        preferencesManager.saveString(
-//                                Constants.TRIP_COST,
-//                                data.getData()?.
-//                            )
+                            binding.tripCycleProgressBar.visibilityGone()
+                            preferencesManager.saveString(Constants.TRIP_COST,data.data?.data?.cost.toString())
 
 
-
-//                        val action = TripLifecycleFragmentDirections.actionTripLifecycleFragmentToTripFinishedFragment()
-//                        mNavController.navigate(action)
                         }
 
                         NetworkState.Status.FAILED -> {
@@ -316,7 +303,7 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
                             binding.tripCycleProgressBar.visibilityGone()
                             val data = networkState.data as Resource<TripStatus>
                             showToast(data.getData()?.message!!)
-                            model.setRequestStatus(false)
+                            sharedViewModel.setRequestStatus(false)
                         }
 
                         NetworkState.Status.FAILED -> {
@@ -344,6 +331,7 @@ class BotttomSheetAcceptedTripFragment : Fragment() {
             tvEndLoc.text = data.dropoffLocationName
             tvStartingLoc.text = data.pickup_location_name
         }
+
     }
     override fun onDestroyView() {
         super.onDestroyView()

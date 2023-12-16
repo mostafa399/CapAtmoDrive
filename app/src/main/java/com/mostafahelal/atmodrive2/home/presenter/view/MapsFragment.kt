@@ -7,9 +7,9 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +35,6 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.google.android.gms.location.Priority
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -55,6 +54,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.mostafahelal.atmodrive2.R
 import com.mostafahelal.atmodrive2.auth.data.data_source.local.ISharedPreferencesManager
+import com.mostafahelal.atmodrive2.auth.presentation.view.MainActivity
 import com.mostafahelal.atmodrive2.databinding.FragmentMapsBinding
 import com.mostafahelal.atmodrive2.utils.AnimationUtils
 import com.mostafahelal.atmodrive2.utils.LocationHelper
@@ -86,8 +86,8 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
     private var mLocationRequest : LocationRequest?= null
     private var mLocationCallback : LocationCallback ?= null
     private var mFusedLocationClient : FusedLocationProviderClient?= null
-    private var mBackPressed: Long = 0
 
+    private var mBackPressed: Long = 0
     private var movingCabMarker : Marker?= null
     private var previousLatLng: LatLng? = null
     private var currentLatLng: LatLng? = null
@@ -127,20 +127,21 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
         initLocation()
         initBottomSheets()
         handleBottomSheetSize()
-        onBackPressHandle()
-        onClick()
         observeOnRequestStatus()
         observeOnAcceptReject()
         observer()
-        updateCaptainStatus()
+        onClick()
+
+
     }
 
     fun init(){
+        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
         myNavHostFragment = childFragmentManager.findFragmentById(R.id.nav_host_fragment11) as NavHostFragment
         db = Firebase.database.reference
         captainId=preferencesManager.getString(Constants.CAPTAIN_ID)
-        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
+
     }
     private fun listenerOnTripId()  {
         valueEventListener =  object : ValueEventListener {
@@ -155,11 +156,8 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
                         if(!tripAccepted){
                             showBottomSheet(R.navigation.bottom_nav_gragh)
                         }
-                    }else{
-                        clearMap()
                     }
                     preferencesManager.saveBoolean(Constants.CAPTAIN_STATUS,true)
-                    updateCaptainStatus()
                 }
 
             }
@@ -185,6 +183,7 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
             binding.checkButtonLayout.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.error))
             binding.checkBox.isChecked = false
 
+
         }else {
 
             binding.textView6.apply {
@@ -194,20 +193,28 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
             }
             binding.checkButtonLayout.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.Background))
             binding.checkBox.isChecked = true
+            listenerOnTripId()
 
 
         }
     }
     fun onClick(){
         binding.checkBox.setOnClickListener {
-            if (mapLocation.isNotEmpty())
+            if (mapLocation.isNotEmpty()){
                 tripViewModel.updateAvailability(mapLocation["lat"].toString(),mapLocation["lng"].toString())
-        }
 
+        }
+    }
+        binding.imgCategory.setOnClickListener {
+            preferencesManager.clearString(Constants.REMEMBER_TOKEN_PREFS)
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+        }
     }
     private fun initLocation (){
         if (mFusedLocationClient == null){
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         }
 
         if (mLocationRequest == null){
@@ -223,25 +230,22 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
     private fun getLocation(){
         mLocationCallback = object : LocationCallback(){
             override fun onLocationResult(result: LocationResult) {
-                super.onLocationResult(result)
-
-                val latLng = result.lastLocation!!
-                val lat = latLng.latitude.toString()
-                val lng = latLng.longitude.toString()
-                mapLocation["lat"] = lat
-                mapLocation["lng"] = lng
-                updateCarLocation(LatLng(latLng.latitude,latLng.longitude))
-                Constants.captainLatLng = LatLng(latLng.latitude,latLng.longitude)
-
+                val location = result.lastLocation!!
+                mapLocation["lat"] = location.latitude.toString()
+                mapLocation["lng"] = location.longitude.toString()
+                Constants.captainLatLng = LatLng(location.latitude,location.longitude)
+                Log.e("CAPTAINLATLNG", "${Constants.captainLatLng}" )
+                updateCarLocation(LatLng(location.latitude,location.longitude))
                 if (online){
                     db.child(Constants.ONLINE_CAPTAINS).child(captainId).updateChildren(mapLocation)
                     if (tripAccepted){
                         db.child(Constants.TRIPS).child(tripId.toString()).updateChildren(mapLocation)
                     }
                 }
+            }
 
             }
-        }
+
 
         mFusedLocationClient?.requestLocationUpdates(mLocationRequest!!,mLocationCallback!!, Looper.getMainLooper())
 
@@ -262,7 +266,6 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
             try {
                 task.getResult(ApiException::class.java)
                 getLocation()
-                tripViewModel.onTrip()
                 listenerOnTripId()
             }catch (exception : ApiException){
 
@@ -300,8 +303,8 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
                 when(resultCode){
                     Activity.RESULT_OK ->{
                         getLocation()
-                        tripViewModel.onTrip()
                         listenerOnTripId()
+
                     }
                     Activity.RESULT_CANCELED ->{
                         locationChecker()
@@ -317,15 +320,14 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
                 .checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
             != PackageManager.PERMISSION_GRANTED ){
 
-            ActivityCompat.requestPermissions(requireActivity()
-                , arrayOf(
+            requestPermissions(
+                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION
                     , Manifest.permission.ACCESS_COARSE_LOCATION),2)
         }else{
             locationChecker()
         }
     }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -341,28 +343,26 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.uiSettings.isMyLocationButtonEnabled=true
         checkPermission()
            }
 
-    private fun addCarMarkerAndGet(latLng: LatLng): Marker {
-        val bitmapDescriptor =
-            BitmapDescriptorFactory.fromBitmap(MapUtils.getCarBitmap(requireContext()))
-        return mMap.addMarker(
-            MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor)
-        )!!
-    }
+private fun addCarMarkerAndGet(latLng: LatLng): Marker {
+    val bitmapDescriptor =
+        BitmapDescriptorFactory.fromBitmap(MapUtils.getCarBitmap(requireContext()))
+    return mMap.addMarker(
+        MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor)
+    )!!
+}
     private fun updateCarLocation(latLng: LatLng) {
         val a = System.currentTimeMillis() - mBackPressed
         if (a < 2600) {
             return
         }
         mBackPressed = System.currentTimeMillis()
-
-        //one Instance of marker
         if (movingCabMarker == null) {
             movingCabMarker = addCarMarkerAndGet(latLng)
         }
-        // setting marker rotation  using previous and current location
         if (previousLatLng == null) {
             currentLatLng = latLng
             previousLatLng = currentLatLng
@@ -370,6 +370,7 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
             movingCabMarker?.setAnchor(0.5f, 0.5f)
             animateCameraInTrip(currentLatLng!!, previousLatLng!!)
         } else {
+
             // animateCameraInTrip(currentLatLng!!, previousLatLng!!)
             previousLatLng = currentLatLng
 
@@ -397,15 +398,15 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
         }
 
     }
+
     private fun animateCameraInTrip(latLng: LatLng, previous: LatLng) {
 
         val cameraPosition = CameraPosition.Builder()
             .bearing(LocationHelper.getBearing(previous, latLng))
-            .target(latLng).tilt(45f).zoom(18f).build()
+            .target(latLng).tilt(45f).zoom(16f).build()
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
     }
-
 
     private fun initBottomSheets() {
         bottomSheetView = binding.tripBottomSheets.tripBottomSheet
@@ -447,9 +448,7 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
                 if ((fragment is BotttomSheetAcceptedTripFragment)
                     && sheet.state == BottomSheetBehavior.STATE_EXPANDED
                 ) {
-                    if (fragment is BotttomSheetAcceptedTripFragment) {
-                        sheet.state = BottomSheetBehavior.STATE_COLLAPSED
-                    }
+                   clearMap()
                 }
             } else {
                 requireActivity().finish()
@@ -469,7 +468,6 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
         sharedViewModel.requestStatus.observe(requireActivity(), Observer {
 
             if (it){
-                // trip accepted
                 tripAccepted = true
                 showBottomSheet(R.navigation.nav_trip)
                 listenerOnTrip()
@@ -484,6 +482,9 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
 
             if (false){
                 sheet.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+            else{
+                clearMap()
             }
 
 
@@ -513,6 +514,7 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
                         }
                         "pay" -> {
                             dropOffMarker?.remove()
+
                         }
                     }
                 }
@@ -531,20 +533,19 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
     private fun observer(){
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                tripViewModel.updateAvaResult.collect { networkState ->
+                tripViewModel.updateAvalibality.collect { networkState ->
                     when (networkState?.status) {
                         NetworkState.Status.SUCCESS -> {
                             val data = networkState.data as Resource<UpdateAvailability>
-                            val captainStatus = data.getData()?.available
                             preferencesManager.saveBoolean(
                                 Constants.CAPTAIN_STATUS,
-                                captainStatus!!
+                                data.getData()?.available!!
                             )
+                            online = data.getData()?.available!!
                             updateCaptainStatus()
                         }
 
                         NetworkState.Status.FAILED -> {
-                            updateCaptainStatus()
                             showToast(networkState.msg.toString())
                         }
 
@@ -558,7 +559,7 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
         }
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                tripViewModel.onTripResult.collect { networkState ->
+                tripViewModel.onTrip.collect { networkState ->
                     when (networkState?.status) {
                         NetworkState.Status.SUCCESS -> {
                             val data = networkState.data as Resource<PassengerData>
@@ -578,7 +579,7 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
                         }
 
                         NetworkState.Status.FAILED -> {
-                           // showToast(networkState.msg.toString())
+                            showToast("Failed to Retreive Trip")
                         }
 
                         NetworkState.Status.RUNNING -> {
@@ -628,7 +629,7 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
         Constants.pickUpLatLng = null
         Constants.dropOffLatLng = null
         getLocation()
-        Constants.captainLatLng?.let{
+        Constants.captainLatLng?.let {
             addCarMarkerAndGet(it)
         }
     }

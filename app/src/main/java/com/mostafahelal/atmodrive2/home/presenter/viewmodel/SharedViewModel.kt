@@ -14,17 +14,12 @@ class SharedViewModel:ViewModel() {
     val tripId = MutableLiveData<Int>()
     val currentLocation = MutableLiveData<HashMap<String,Any>>()
     val tripStatus = MutableLiveData<Boolean>()
-
-
-
-    fun setRequestStatus(status: Boolean) {
+     fun setRequestStatus(status: Boolean) {
         requestStatus.value = status
     }
-
     fun setTripId(id: Int) {
         tripId.value = id
     }
-
     fun setCurrentLocation(loc:HashMap<String,Any>){
         currentLocation.value = loc
     }

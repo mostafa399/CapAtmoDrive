@@ -5,5 +5,5 @@ import com.google.firebase.database.IgnoreExtraProperties
 data class CaptainModel(val id: String, val tripId: Int
                      , val lat: String, val lng: String)
 {
-    constructor():this("1",0,"30.369852","30147852")
+    constructor():this("1",0,"30.369852","30.147852")
 }

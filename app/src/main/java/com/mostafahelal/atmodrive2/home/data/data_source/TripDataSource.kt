@@ -76,8 +76,8 @@ class TripDataSource @Inject constructor(val tripApi: TripApi):ITripDataSource {
 
     override suspend fun endTrip(
         trip_id: Int,
-        captain_lat: String,
-        captain_lng: String,
+        captain_lat: Double,
+        captain_lng: Double,
         captain_location_name: String,
         distance: Double
     ): Resource<TripStatus> {
@@ -128,6 +128,18 @@ class TripDataSource @Inject constructor(val tripApi: TripApi):ITripDataSource {
                 return Resource.Success(onTrip.asDomain())
             }else{
                 return Resource.Error(onTrip.message)
+            }
+        }catch (e: Exception){
+            Resource.Error(NetworkState.getErrorMessage(e).msg.toString())
+        }    }
+
+    override suspend fun confirmCash(tripId: Int, amount: Double): Resource<TripStatus> {
+        return try {
+            val confirmTrip = tripApi.confirmCash(tripId, amount)
+            if (confirmTrip.status){
+                return Resource.Success(confirmTrip.asDomain())
+            }else{
+                return Resource.Error(confirmTrip.message)
             }
         }catch (e: Exception){
             Resource.Error(NetworkState.getErrorMessage(e).msg.toString())

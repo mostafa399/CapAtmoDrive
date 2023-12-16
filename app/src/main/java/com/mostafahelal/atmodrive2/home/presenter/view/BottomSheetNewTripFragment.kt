@@ -62,7 +62,7 @@ class BottomSheetNewTripFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding= FragmentBottomSheetNewTripBinding.bind(view)
         init()
-        startCountdownTimer()
+        getCountDown()
         onClick()
         listenerOnTripId()
         observer()
@@ -83,9 +83,8 @@ class BottomSheetNewTripFragment : Fragment() {
         }
 
         binding.btnRejectTrip.setOnClickListener {
-            db.child(Constants.ONLINE_CAPTAINS).child(capId).child("tripId").setValue(0)
-            //it.disable()
             sharedViewModel.setTripStatus(false)
+            db.child(Constants.ONLINE_CAPTAINS).child(capId).child("tripId").setValue(0)
         }
     }
 
@@ -97,7 +96,7 @@ class BottomSheetNewTripFragment : Fragment() {
                         NetworkState.Status.SUCCESS -> {
                             binding.newRequestProgressBar.visibilityGone()
                             val data = networkState.data as Resource<PassengerDetails>
-                            showPassengerData(data.getData()?.data)
+                            getPassengerData(data.getData()?.data)
                             timerCounter?.start()
                         }
 
@@ -146,13 +145,12 @@ class BottomSheetNewTripFragment : Fragment() {
 
     private fun listenerOnTripId() {
         sharedViewModel.tripId.observe(requireActivity(), Observer {
-
             tripViewModel.getPassengerDetails(it)
 
         })
     }
 
-    private fun showPassengerData(data: PassengerData?){
+    private fun getPassengerData(data: PassengerData?){
         tripId = data?.id!!
         binding.apply {
             tvLocFromWhere.text = data.dropoffLocationName
@@ -164,7 +162,7 @@ class BottomSheetNewTripFragment : Fragment() {
         Constants.dropOffLatLng = LatLng(data.dropoffLat!!.toDouble(),data.dropoffLng!!.toDouble())
     }
 
-    private fun startCountdownTimer(){
+    private fun getCountDown(){
         timerCounter = object : CountDownTimer(timer, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
@@ -190,6 +188,7 @@ class BottomSheetNewTripFragment : Fragment() {
                 }
                 binding.btnRejectTrip.disable()
                 binding.btnAcceptTrip.disable()
+                sharedViewModel.setTripStatus(false)
                 cancel()
             }
         }

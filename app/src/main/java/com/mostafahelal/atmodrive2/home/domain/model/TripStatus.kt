@@ -4,5 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class TripStatus(
     val message: String,
-    val status: Boolean
+    val status: Boolean,
+    val data: CostData?
 )
